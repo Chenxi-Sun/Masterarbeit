@@ -2,11 +2,12 @@
 % function [Result,R_mean] = AMPELDOR_DNA(nd,EP,zeit)
 % function [Result,R_mean,sigma] = AMPELDOR_DNA(nd,EP,zeit)
 % sigma_y=12;
-function [Result,R_mean,sigma] = AMPELDOR_DNA(sigma_y,nd,EP,zeit)
+function [Result,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nd,EP,zeit)
 % function [Result] = AMPELDOR_DNA(nd,sigma_r,EP,zeit)
 % function [Result] = AMPELDOR_DNA(nd,sigma_h,EP,zeit)
 % function [Result] = AMPELDOR_DNA(alpha,beta,EP,zeit)
 % nd=7;
+% for nd=5:14
 sigma_z=5;
 str='B';
 nd=nd-4;
@@ -254,15 +255,16 @@ Conformers.Distance = r/10;
 pd=fitdist(Conformers.Distance,'Normal');
 R_mean=pd.mu;
 sigma=pd.sigma;
-% FWHM=2.3548*sigma;
+FWHM=2.3548*sigma;
 % R_mean=sum(Conformers.Distance)/500;
 % rmsd=sqrt(sum((Conformers.Distance-R_mean).^2)/500);
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
 % mean_trend=mean(trend);
-h=histfit(Conformers.Distance);
-h(1).FaceColor = [.3 .75 .93];
-h(2).Color = [.0 .0 1];
+% h=histfit(Conformers.Distance);
+% h(1).FaceColor = [.3 .75 .93];
+% h(2).Color = [.0 .0 1];
+% Distance(nd,:)=r/10;
 end 
 % load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\distance_pymol_bpd4to13.mat')
 % rmsd=sqrt(sum((R-distance_all(1:10)').^2,2)./500);
@@ -300,4 +302,10 @@ end
 % % xlim([0 5])
 % hold on 
 % end 
-% xlabel('position of 2^{nd} spin label')
+% xlim([1 5.5])
+% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+%     [1 2 3 4 5 6]);
+% set(gca,'linewidth',1.5) 
+% box off
+% xlabel('Distance [nm]')
+% ylabel('Normalised probability')

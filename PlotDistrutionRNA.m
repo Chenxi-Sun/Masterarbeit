@@ -7,8 +7,8 @@ dsRNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsRNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
-% load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+% load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 nd='Which 2nd position? (8-15):';
 str=input(nd,'s');
 % for nr=8:15
@@ -20,25 +20,25 @@ switch (str)
 zeit = real(RNA.RNA1_8.Xband.time);
 Experimental.Sexp = RNA.RNA1_8.Xband.Sexp(:,1:6);
 nr=8;
-sigma_y=6;
+sigma_y=8;
 t_max=1100;
  case '9'
 zeit = real(RNA.RNA1_9.Xband.time);
 Experimental.Sexp = RNA.RNA1_9.Xband.Sexp(:,1:6);
 nr=9;
-sigma_y=6;
+sigma_y=8;
 t_max=1100;
  case '10'
 zeit = real(RNA.RNA1_10.Xband.time);
 Experimental.Sexp = RNA.RNA1_10.Xband.Sexp(:,1:6);
 nr=10;
-sigma_y=6;
+sigma_y=8;
 t_max=1200;
  case '11'
 zeit = real(RNA.RNA1_11.Xband.time);
 Experimental.Sexp = RNA.RNA1_11.Xband.Sexp(:,1:6);
 nr=11;
-sigma_y=4;
+sigma_y=0;
 t_max=1600;
  case '12'
 zeit = real(RNA.RNA1_12.Xband.time);
@@ -50,7 +50,7 @@ t_max=2000;
 zeit = real(RNA.RNA1_13.Xband.time);
 Experimental.Sexp = RNA.RNA1_13.Xband.Sexp(:,1:6);
 nr=13;
-sigma_y=6;
+sigma_y=2;
 t_max=2500;
  case '14'
 zeit = real(RNA.RNA1_14.Xband.time);
@@ -62,10 +62,12 @@ t_max=2200;
 zeit = real(RNA.RNA1_14.Xband.time);
 Experimental.Sexp = RNA.RNA1_14.Xband.Sexp(:,1:6);
 nr=15;
+sigma_y=0;
+t_max=2200;
 end
 str2=num2str(sigma_y);
 
-F=figure(2)
+F=figure(1)
 set(gca,'FontSize',14,'FontWeight','bold','XTick',...
     [1 2 3 4 5 6]);
 set(gca,'linewidth',1.5) 
@@ -73,9 +75,12 @@ xlabel('Distance [nm]')
 ylabel('Probability')
 xlim([1 5])
 
-title(['Çm RNA1-',str,' (',str2,'^o)']);
+% title(['Çm RNA1-',str,' (',str2,'^o)']);
+title(['Cm RNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
 
-savefig(F,['E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA\CmRNAModelB1_',str,'.fig'])
-savePDF('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA\',['CmRNAModelB1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\CmRNAModelA1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\',['CmRNAModelA1_',str,'.pdf'])
+savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\CmdotRNAModelA1_',str,'.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\',['CmdotRNAModelA1_',str,'.pdf'])

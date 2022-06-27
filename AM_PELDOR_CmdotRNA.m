@@ -102,7 +102,7 @@ new_z2=new_d.*n_bp+new_e2;
    case 'A'
 % Model A
 % % % %parameter
-deltah=normrnd(0,3.85);   %standard deviation of pitch height= 3.85 
+deltah=normrnd(0,4.25);   %standard deviation of pitch height= 3.85 
 % deltah=0;
 h=h0+deltah;
 deltaL=deltah*20/18.2;  %AM paper
