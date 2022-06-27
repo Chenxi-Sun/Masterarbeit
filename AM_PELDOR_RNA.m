@@ -3,7 +3,7 @@
 function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit)
 % % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
 % for nd=8:15
-str='B';
+str='A';
 % sigma_y=0;
 sigma_z=5;
 %%Parameter extracted from pymol and fitted by cftool
@@ -259,10 +259,10 @@ FWHM=2.3548*sigma;
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
 % mean_trend=mean(trend);
-% h=histfit(Conformers.Distance);
-% h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
-% h(2).Color = [1 0 0];
-% % Distance(nd,:)=r/10;
+h=histfit(Conformers.Distance);
+h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
+h(2).Color = [1 0 0];
+% Distance(nd,:)=r/10;
 end
 
 % for s=1:8

@@ -1,5 +1,5 @@
-for nr=8:15
-% clear;
+% for nr=8:15
+clear;
 Band = "Xband";
 EP = importdata('ExperimentalParameters.mat');
 dsRNA.Xband.EP.Sequence = EP.Sequence;
@@ -7,13 +7,13 @@ dsRNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsRNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
-load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-% % load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-% nd='Which 2nd position? (8-15):';
-% str=input(nd,'s');
+% load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+nd='Which 2nd position? (8-15):';
+str=input(nd,'s');
 
 %     
-str=num2str(nr);
+% str=num2str(nr);
 
 switch (str)
  case '8'
@@ -44,7 +44,7 @@ t_max=1600;
 zeit = real(RNA.RNA1_12.Xband.time);
 Experimental.Sexp = RNA.RNA1_12.Xband.Sexp(:,1:6);
 nr=12;
-sigma_y=8;
+sigma_y=0;
 t_max=2000;
  case '13'
 zeit = real(RNA.RNA1_13.Xband.time);
@@ -88,9 +88,9 @@ end
 % % % 
 % sigma_y=0;
 [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit);
-R_mean_all(nr-7,:)=R_mean;
-FWHM_all(nr-7,:)=FWHM;
-end
+% R_mean_all(nr-7,:)=R_mean;
+% FWHM_all(nr-7,:)=FWHM;
+% % end
 
 % sigma_r=0.81;
 % [Simulated,R_mean] = AM_PELDOR_RNA(sigma_r,nr,EP,zeit);
@@ -115,28 +115,28 @@ end
 
 %PLOT
 % 
-% [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
-% o = 0.1; 
-% Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
-% SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
+[devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
+o = 0.1; 
+Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
+SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
+
+
+F=figure(2);
+% F=open('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\PELDOR_result\1_9_B.fig')
+plot(zeit*1000,SC,'r','LineWidth',2)
+% plot(zeit*1000,SC,'b','LineWidth',2)
 % 
-% 
-% F=figure(2);
-% % F=open('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\PELDOR_result\1_9_B.fig')
-% plot(zeit*1000,SC,'r','LineWidth',2)
-% % plot(zeit*1000,SC,'b','LineWidth',2)
+hold on
+plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
 % % 
-% hold on
-% plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
-% % % 
-% xlabel('Time [ns]');
-% ylabel('Signal intensity')
-% str2=num2str(sigma_y);
-% title(['Çm RNA1-',str,' (',str2,'^o)']);
-% axis([0 t_max 0.3 1.5]);
-% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
-%     [0 500 1000 1500 2000 2500 3000]);
-% set(gca,'linewidth',1.5) 
+xlabel('Time [ns]');
+ylabel('Signal intensity')
+str2=num2str(sigma_y);
+title(['Çm RNA1-',str,' (',str2,'^o)']);
+axis([0 t_max 0.3 1.5]);
+set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+    [0 500 1000 1500 2000 2500 3000]);
+set(gca,'linewidth',1.5) 
 
 %CmRNAModelB
 % savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelA\CmRNAModelA1_',str,'.fig'])

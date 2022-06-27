@@ -1,5 +1,5 @@
 % for nd=5:14
-clear;
+% clear;
 Band = "Xband";
 EP = importdata('ExperimentalParameters.mat');
 dsDNA.Xband.EP.Sequence = EP.Sequence;
@@ -21,55 +21,55 @@ switch (str)
 zeit = real(DNApeldor.S0105.T)./1000;
 Experimental.Sexp = DNApeldor.S0105.Sexp;
 nr=5;
-sigma_y=6;
+sigma_y=8;
  case '6'
 zeit = real(DNApeldor.S0106.T)./1000;
 Experimental.Sexp = DNApeldor.S0106.Sexp;
 Experimental.Sexp=Experimental.Sexp(1:185,:);
 nr=6;
-sigma_y=6;
+sigma_y=18;
  case '7'
 zeit = real(DNApeldor.S0107.T)./1000;
 Experimental.Sexp = DNApeldor.S0107.Sexp;
 nr=7;
-sigma_y=12;
+sigma_y=10;
  case '8'
 zeit = real(DNApeldor.S0108.T)./1000;
 Experimental.Sexp = DNApeldor.S0108.Sexp;
 nr=8;
-sigma_y=6;
+sigma_y=0;
  case '9'
 zeit = real(DNApeldor.S0109.T)./1000;
 Experimental.Sexp = DNApeldor.S0109.Sexp;
 nr=9;
-sigma_y=6;
+sigma_y=0;
  case '10'
 zeit = real(DNApeldor.S0110.T)./1000;
 Experimental.Sexp = DNApeldor.S0110.Sexp;
 nr=10;
-sigma_y=8;
+sigma_y=0;
  case '11'
 zeit = real(DNApeldor.S0111.T)./1000;
 Experimental.Sexp = DNApeldor.S0111.Sexp;
 nr=11;
-sigma_y=8;
+sigma_y=4;
 t_max=1700;
  case '12'
 zeit = real(DNApeldor.S0112.T)./1000;
 Experimental.Sexp = DNApeldor.S0112.Sexp;
 nr=12;
-sigma_y=8;
+sigma_y=4;
  case '13'
 zeit = real(DNApeldor.S0113.T)./1000;
 Experimental.Sexp = DNApeldor.S0113.Sexp;
 nr=13;
-sigma_y=6;
+sigma_y=10;
 t_max=2000;
  case '14'
 zeit = real(DNApeldor.S0114.T)./1000;
 Experimental.Sexp = DNApeldor.S0114.Sexp;
 nr=14;
-sigma_y=4;
+sigma_y=12;
 t_max=3000;
 end
 
@@ -79,12 +79,13 @@ set(gca,'FontSize',14,'FontWeight','bold','XTick',...
 set(gca,'linewidth',1.5) 
 xlabel('Distance [nm]')
 ylabel('Probability')
-xlim([1 5])
+% xlim([1 5])
+xlim([2 6])
 str2=num2str(sigma_y);
-% title(['Ç DNA1-',str,' (',str2,'^o)']);
-title(['C DNA1-',str,' (',str2,'^o)']);
+title(['Ç DNA1-',str,' (',str2,'^o)']);
+% title(['C DNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
 
-savefig(F,['E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelB\CdotDNAModelB1_',str,'.fig'])
-savePDF('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelB\',['CdotDNAModelB1_',str,'.pdf'])
+savefig(F,['E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\ModelA1_',str,'.fig'])
+savePDF('E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\',['ModelA1_',str,'.pdf'])
