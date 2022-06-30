@@ -7,8 +7,8 @@ dsRNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsRNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
-load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-% load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+% load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 nd='Which 2nd position? (8-15):';
 str=input(nd,'s');
 % for nr=8:15
@@ -72,15 +72,15 @@ set(gca,'FontSize',14,'FontWeight','bold','XTick',...
     [1 2 3 4 5 6]);
 set(gca,'linewidth',1.5) 
 xlabel('Distance [nm]')
-ylabel('Probability')
+ylabel('no. of occurences')
 xlim([1 5])
 
 % title(['Çm RNA1-',str,' (',str2,'^o)']);
-title(['Cm RNA1-',str,' (',str2,'^o)']);
+% title(['Cm RNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
 
 % savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\CmRNAModelA1_',str,'.fig'])
 % savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\',['CmRNAModelA1_',str,'.pdf'])
-savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\CmdotRNAModelA1_',str,'.fig'])
-savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\',['CmdotRNAModelA1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\CmdotRNAModelA1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\preAMvsexp_CmRNA_ModelA\',['CmdotRNAModelA1_',str,'.pdf'])

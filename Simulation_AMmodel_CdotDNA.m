@@ -16,7 +16,7 @@ Experimental.Sexp(:,5)=CdotDNA1_9.Xband80MHz(1:152);
 Experimental.Sexp(:,6)=CdotDNA1_9.Xband90MHz(1:152);
 
 zeit=CdotDNA1_9.Time(1:152);
-sigma_y=8;
+sigma_y=0;
 Simulated = AMPELDOR_CdotDNA(sigma_y,9,EP,zeit)
 
 % % Model B change sigma_y

@@ -19,7 +19,7 @@ Experimental.Sexp(:,6)=CmdotdsRNA.Xband.Spektrum90(1:151,2);
 zeit=CmdotdsRNA.Xband.Spektrum40(:,1);
 % 
 
-sigma_y=8;
+sigma_y=0;
 [Simulated,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,12,EP,zeit)
 
 

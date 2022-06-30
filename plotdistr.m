@@ -17,25 +17,25 @@ clear;
 % xmax2=DNA1_9.Qband.distr(p2,1);
 
 
-% RNA1_12 = importdata('RNA1_12_old.mat');
-% CmdotdsRNA.Qband = importdata('1_Cmdot_dsRNA_PELDOR_R_distr.dat');
-% plot(CmdotdsRNA.Qband(:,1),CmdotdsRNA.Qband(:,2),'LineWidth',3)
-% hold on 
-% plot(RNA1_12.Qband.distr(:,1),RNA1_12.Qband.distr(:,2),'r','LineWidth',3)
-% axis([1.4 6.5 0 0.02])
-% xlabel('r(nm)')
-% ylabel('P(nm^-1)')
-% title('Distance distribution of dsRNA1\_12 molecules')
-% legend('Cmdot labeled','Çm labeled') 
-% 
-% [ymax1,p1] = max(CmdotdsRNA.Qband(:,2));
-% xmax1=CmdotdsRNA.Qband(p1,1);
-% 
-% [ymax2,p2] = max(RNA1_12.Qband.distr(:,2));
-% xmax2=RNA1_12.Qband.distr(p2,1);
-% 
-% [ymax12,p12] = 0.5*max(CmdotdsRNA.Qband(:,2));
-% xmax12=CmdotdsRNA.Qband(p12,1);
+RNA1_12 = importdata('RNA1_12_old.mat');
+CmdotdsRNA.Qband = importdata('1_Cmdot_dsRNA_PELDOR_R_distr.dat');
+plot(CmdotdsRNA.Qband(:,1),CmdotdsRNA.Qband(:,2),'LineWidth',3)
+hold on 
+plot(RNA1_12.Qband.distr(:,1),RNA1_12.Qband.distr(:,2),'r','LineWidth',3)
+axis([1.4 6.5 0 0.02])
+xlabel('r(nm)')
+ylabel('P(nm^-1)')
+title('Distance distribution of dsRNA1\_12 molecules')
+legend('Cmdot labeled','Çm labeled') 
+
+[ymax1,p1] = max(CmdotdsRNA.Qband(:,2));
+xmax1=CmdotdsRNA.Qband(p1,1);
+
+[ymax2,p2] = max(RNA1_12.Qband.distr(:,2));
+xmax2=RNA1_12.Qband.distr(p2,1);
+
+[ymax12,p12] = 0.5*max(CmdotdsRNA.Qband(:,2));
+xmax12=CmdotdsRNA.Qband(p12,1);
 
 
 

@@ -3,8 +3,10 @@
 % function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_r,nd,EP,zeit)
 function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
 % % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
-str='B';
-% sigma_y=6;
+% for nd=8:15
+str='A';
+sigma_z=5;
+% sigma_y=0;
 %%Parameter extracted from pymol and fitted by cftool
 n_bp=1:1:20; %20base pair
 % nd=8;
@@ -181,7 +183,7 @@ Y_Spin1(k,:)=Y_Spin1(k,:)/norm(Y_Spin1(k,:));
 rotate_theta1_1(k,:)=normrnd(0,sigma_y); 
 [X1(k,:), Y1(k,:) Z1(k,:)] = AxisAngleRotate(X_Spin1(k,:),Y_Spin1(k,:),Z_Spin1(k,:),Y_Spin1(k,:),rotate_theta1_1(k,:));
 %second rotation around z-axis with 5 grad
-rotate_theta2_1(k,:)=normrnd(0,5); 
+rotate_theta2_1(k,:)=normrnd(0,sigma_z); 
 [X2(k,:), Y2(k,:) Z2(k,:)] = AxisAngleRotate(X1(k,:),Y1(k,:),Z1(k,:),Z1(k,:),rotate_theta2_1(k,:));
 %second coordinatesystem for Cmdot Spin label
 [xaxis1_dre(k,:),yaxis1_dre(k,:),zaxis1_dre(k,:)] = AxisAngleRotate(X2(k,:),Y2(k,:),Z2(k,:),Z2(k,:),27);
@@ -228,7 +230,7 @@ Y_Spin2(k,:)=Y_Spin2(k,:)/norm(Y_Spin2(k,:));
 rotate_theta1_2(k,:)=normrnd(0,sigma_y); %range -5 to 5grad
 [X1_2(k,:), Y1_2(k,:) Z1_2(k,:)] = AxisAngleRotate(X_Spin2(k,:),Y_Spin2(k,:),Z_Spin2(k,:),Y_Spin2(k,:),rotate_theta1_2(k,:));
 %second rotaion around z-axis with 5 grad
-rotate_theta2_2(k,:)=normrnd(0,5); %range -5 to 5grad
+rotate_theta2_2(k,:)=normrnd(0,sigma_z); %range -5 to 5grad
 [X2_2(k,:), Y2_2(k,:) Z2_2(k,:)] = AxisAngleRotate(X1_2(k,:),Y1_2(k,:),Z1_2(k,:),Z1_2(k,:),rotate_theta2_2(k,:));
 %second coordinatesystem for Cdot Spin label
 [xaxis2_dre(k,:),yaxis2_dre(k,:),zaxis2_dre(k,:)] = AxisAngleRotate(X2_2(k,:),Y2_2(k,:),Z2_2(k,:),Z2_2(k,:),27);
@@ -261,4 +263,26 @@ Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time ax
 h=histfit(Conformers.Distance);
 h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
 h(2).Color = [1 0 0];
+% Distance(nd,:)=r/10;
 end
+
+% for s=1:8
+% bpd=s;
+% pd=fitdist(Distance(bpd,:)','Normal');
+% mu(s)=pd.mu;
+% sigma(s)=pd.sigma;
+% end 
+% x=1:0.01:5.5;
+% for p=1:s
+% y(p,:)=normpdf(x,mu(p),sigma(p));
+% plot(x,y(p,:),'LineWidth',2)
+% % xlim([0 5])
+% hold on 
+% end 
+% xlim([1 5.5])
+% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+%     [1 2 3 4 5 6]);
+% set(gca,'linewidth',1.5) 
+% box off
+% xlabel('Distance [nm]')
+% ylabel('Normalised probability')

@@ -52,7 +52,7 @@ sigma_y=0;
 zeit = real(DNApeldor.S0111.T)./1000;
 Experimental.Sexp = DNApeldor.S0111.Sexp;
 nr=11;
-sigma_y=4;
+sigma_y=0;
 t_max=1700;
  case '12'
 zeit = real(DNApeldor.S0112.T)./1000;
@@ -78,14 +78,14 @@ set(gca,'FontSize',14,'FontWeight','bold','XTick',...
     [1 2 3 4 5 6]);
 set(gca,'linewidth',1.5) 
 xlabel('Distance [nm]')
-ylabel('Probability')
-% xlim([1 5])
-xlim([2 6])
+ylabel('no. of occurences')
+xlim([1 5])
+% xlim([2 6])
 str2=num2str(sigma_y);
 title(['Ç DNA1-',str,' (',str2,'^o)']);
 % title(['C DNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
-
+% 
 savefig(F,['E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\ModelA1_',str,'.fig'])
 savePDF('E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\',['ModelA1_',str,'.pdf'])

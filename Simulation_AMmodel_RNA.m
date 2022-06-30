@@ -20,7 +20,7 @@ switch (str)
 zeit = real(RNA.RNA1_8.Xband.time);
 Experimental.Sexp = RNA.RNA1_8.Xband.Sexp(:,1:6);
 nr=8;
-sigma_y=6;
+sigma_y=8;
 t_max=1100;
  case '9'
 zeit = real(RNA.RNA1_9.Xband.time);
@@ -38,13 +38,13 @@ t_max=1200;
 zeit = real(RNA.RNA1_11.Xband.time);
 Experimental.Sexp = RNA.RNA1_11.Xband.Sexp(:,1:6);
 nr=11;
-sigma_y=4;
+sigma_y=0;
 t_max=1600;
  case '12'
 zeit = real(RNA.RNA1_12.Xband.time);
 Experimental.Sexp = RNA.RNA1_12.Xband.Sexp(:,1:6);
 nr=12;
-sigma_y=0;
+sigma_y=2;
 t_max=2000;
  case '13'
 zeit = real(RNA.RNA1_13.Xband.time);

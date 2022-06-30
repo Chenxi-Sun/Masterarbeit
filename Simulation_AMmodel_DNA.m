@@ -53,7 +53,7 @@ sigma_y=0;
 zeit = real(DNApeldor.S0111.T)./1000;
 Experimental.Sexp = DNApeldor.S0111.Sexp;
 nr=11;
-sigma_y=4;
+sigma_y=0;
 t_max=1700;
  case '12'
 zeit = real(DNApeldor.S0112.T)./1000;
