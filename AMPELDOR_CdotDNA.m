@@ -259,7 +259,7 @@ Conformers.Distance = r/10;
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
 % mean_trend=mean(trend);
-% h=histfit(Conformers.Distance);
-% h(1).FaceColor = [.3 .75 .93];
-% h(2).Color = [.0 .0 1];
+h=histfit(Conformers.Distance);
+h(1).FaceColor = [.3 .75 .93];
+h(2).Color = [.0 .0 1];
 end 

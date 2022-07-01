@@ -38,6 +38,7 @@ load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\expDistances.mat
 % xlim([5 14])
 % set(gca,'FontSize',14,'FontWeight','bold');
 % set(gca,'linewidth',1.5) 
+% title('FWHM')
 
 % savefig(F1,['Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\Mean_Distance_dsDNA.fig'])
 % savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\','Mean_Distance_dsDNA.pdf')
@@ -45,9 +46,9 @@ load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\expDistances.mat
 % savefig(F1,['Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\Mean_Distance_dsDNA.fig'])
 % savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\','Mean_Distance_dsDNA.pdf')
 
-%%CRNA ModelA
+% %%CRNA ModelA
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelA\R_mean_modelA_dsRNA.mat')
-load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelA\FWHM_modelA_dsRNA.mat')
+% load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelA\FWHM_modelA_dsRNA.mat')
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\RNA_exp_FWHM_Tikhonov.mat')
 
 %%CRNA ModelB
@@ -81,3 +82,4 @@ ylim([0 1])
 xlim([8 15])
 set(gca,'FontSize',14,'FontWeight','bold');
 set(gca,'linewidth',1.5) 
+title('FWHM')

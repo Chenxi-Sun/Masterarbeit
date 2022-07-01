@@ -4,7 +4,7 @@
 function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
 % % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
 % for nd=8:15
-str='A';
+str='B';
 sigma_z=5;
 % sigma_y=0;
 %%Parameter extracted from pymol and fitted by cftool

@@ -7,8 +7,8 @@ dsDNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsDNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsDNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
-% load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
-load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
+load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
+% load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
 
 nd='Which 2nd position? (5-14):';
 str=input(nd,'s');
@@ -73,6 +73,8 @@ sigma_y=12;
 t_max=3000;
 end
 
+sigma_y=6;
+
 F=figure(1)
 set(gca,'FontSize',14,'FontWeight','bold','XTick',...
     [1 2 3 4 5 6]);
@@ -87,5 +89,7 @@ title(['Ç DNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
 % 
-savefig(F,['E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\ModelA1_',str,'.fig'])
-savePDF('E:\Vorlesungen\EPR\Master\ChSun\Masterarbeit\AMmodel_DNA\X_Band_DeerAnalysis\predicted(AM)vsExp_C_DNA_ModelA\',['ModelA1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\Distr_ModelA1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\',['Distr_ModelA1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelB_6grad\Distr_CdotModelB1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelB_6grad\',['Distr_CdotModelB1_',str,'.pdf'])

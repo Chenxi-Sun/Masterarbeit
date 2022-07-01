@@ -19,7 +19,7 @@ Experimental.Sexp(:,6)=CmdotdsRNA.Xband.Spektrum90(1:151,2);
 zeit=CmdotdsRNA.Xband.Spektrum40(:,1);
 % 
 
-sigma_y=0;
+sigma_y=4;
 [Simulated,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,12,EP,zeit)
 
 
@@ -72,5 +72,5 @@ set(gca,'linewidth',1.5)
 % savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelA\',['CmdotRNAModelA1_12.pdf'])
 
 %CmRNAModelB
-savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelB\CmdotRNAModelB1_12.fig'])
-savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelB\',['CmdotRNAModelB1_12.pdf'])
+savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\RNA_ModelB_4grad\CmdotRNAModelB1_12.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\RNA_ModelB_4grad\',['CmdotRNAModelB1_12.pdf'])
