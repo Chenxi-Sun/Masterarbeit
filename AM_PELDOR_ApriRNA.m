@@ -1,29 +1,41 @@
 %% 
-% function [Result,R_mean] = AM_PELDOR_RNA(sigma_r,nd,EP,zeit)
-% function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_r,nd,EP,zeit)
-function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
-% % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
+% function [Result,R_mean] = AM_PELDOR_ApriRNA(sigma_r,nd,EP,zeit)
+% function [Result,R_mean] = AM_PELDOR_ApriRNA(sigma_h,nd,EP,zeit)
+function [Result,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nd,EP,zeit,str)
+% function [Result,R_mean,FWHM,ymax] = AM_PELDOR_ApriRNA(sigma_y,nd,EP,zeit)
+% % function [Result,R_mean] = AM_PELDOR_ApriRNA(nd,EP,zeit)
+% str='B'
 % for nd=8:15
-str='A';
-sigma_z=5;
 % sigma_y=0;
+sigma_z=5;
 %%Parameter extracted from pymol and fitted by cftool
 n_bp=1:1:20; %20base pair
 % nd=8;
 % sigma_r=1;
 nd=nd-7;
+%%initial position for C from pymol
 
 %parameter for expression for C1-points at RNA
-r0=8.284;
-h0=29.8476;
-b=0.5709;
-c1_x=3.468;
-c1_y=1.908;
-c2_x=-1.457;
-c2_y=3.265;
-d=2.712;
-e1=-1.527;
-e2=-3.944;
+r0=8.837;
+h0=35.5686;
+b=0.522;
+c1_x=3.565;
+c1_y=1.983;
+c2_x=-1.468;
+c2_y=3.273;
+d=2.955;
+e1=-2.177;
+e2=-3.728;
+
+%helix.A
+x1=r0*sin(b.*n_bp+c1_x);
+y1=r0*sin(b.*n_bp+c1_y);
+z1=d.*n_bp+e1;  
+
+%helix.B
+x2=r0*sin(b.*n_bp+c2_x);
+y2=r0*sin(b.*n_bp+c2_y);
+z2=d.*n_bp+e2;
 
 %helix.A
 x1=r0*sin(b.*n_bp+c1_x);
@@ -45,17 +57,19 @@ C=sqrt((2*pi*r0)^2*L0^2/h0^2+L0^2); %countor length (AM paper)
 n_turns=b.*19/2/pi;  %the range of b.*n_bp+c1 = how much 2pi = how much turns
 
 %z_axis
-% Z=[x1(11)-x1(1) y1(11)-y1(1) z1(11)-z1(1)];
-% z_axis=Z/norm(Z);
+
 z_axis=[0 0 1];
 
 
 %%rotationsangle 1st SL
 alpha_1=74.42/360*2*pi;
-beta_1=5.2/360*2*pi; 
+% beta_1=5.2/360*2*pi; 
+beta_1=3.6/360*2*pi; 
+
 %%rotationsangle 2nd SL 8-15 bp; (5-7)samples dont exist
-alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
-beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
+% alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
+% beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
+
 
 
 p=500;
@@ -111,7 +125,7 @@ deltaL=deltah*20/20.9712;  %AM paper
 L=L0+deltaL; 
 r=r0;
 new_turns=n_turns.*sqrt((2*pi*r0)^2+h0^2)/sqrt((2*pi*r0)^2+h^2); %countor length=n_turns*sqrt((2pir)^2+h^2)
-new_b=new_turns*2*pi/19+0.0005; %the range of b.*n_bp+c1 = how much 2pi = how much turns; -0.0138: when deltar=0,keep new_b = b
+new_b=new_turns*2*pi/19; %the range of b.*n_bp+c1 = how much 2pi = how much turns; -0.0138: when deltar=0,keep new_b = b
 new_c1_x=b+c1_x-new_b;  %keep the first position for C1a(1) (x1,y1,z1) same
 new_c1_y=b+c1_y-new_b;
 new_d=new_turns*h/19;  
@@ -132,7 +146,6 @@ new_z2=new_d.*n_bp+new_e2;
 % % 
     otherwise
 end 
-
 %%%%new coordinate calculation
 %new C1a/C1b position
 C1a=[new_x1;new_y1;new_z1]';
@@ -151,11 +164,9 @@ y_axis_Spin1=y_axis_Spin1/norm(y_axis_Spin1);
 %%first rotation
 x_axis2_Spin1=x_axis1_Spin1.*cos(alpha_1)-y_axis_Spin1.*sin(alpha_1);
 %%second rotation
-x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)-z_axis_Spin1.*sin(beta_1);
+x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)+z_axis_Spin1.*sin(beta_1);
 %%find Spin1
 Spin_1=C1a(3,:)+x_axis3_Spin1.*11.4;  %length of C1 and spinlabel is 11.4A
-% 
-
 
 %C Label position rechnen
 Z_Spin1(k,:)=cross(x_axis3_Spin1,x_axis1_Spin1);
@@ -180,10 +191,9 @@ rotate_theta1_1(k,:)=normrnd(0,sigma_y);
 %second rotation around z-axis with 5 grad
 rotate_theta2_1(k,:)=normrnd(0,sigma_z); 
 [X2(k,:), Y2(k,:) Z2(k,:)] = AxisAngleRotate(X1(k,:),Y1(k,:),Z1(k,:),Z1(k,:),rotate_theta2_1(k,:));
-%second coordinatesystem for Cmdot Spin label
-[xaxis1_dre(k,:),yaxis1_dre(k,:),zaxis1_dre(k,:)] = AxisAngleRotate(X2(k,:),Y2(k,:),Z2(k,:),Z2(k,:),27);
 %find electron center
-M(k,:)=N1C2_1(k,:)+X2(k,:)*(2.3+0.688*1.5)+xaxis1_dre(k,:)*(3.959*1.5+0.7);
+M(k,:)=N1C2_1(k,:)+X2(k,:)*((sqrt(7^2-0.75^2)+sqrt(8.2^2-0.75^2))/2+2.3);
+
 
 %%Spin2 position 
 %%rotation equation:x2=x*cos(theta)+y*sin(theta),y is direction
@@ -196,9 +206,9 @@ y_axis_Spin2=cross(x_axis1_Spin2,z_axis_Spin2);
 y_axis_Spin2=y_axis_Spin2/norm(y_axis_Spin2);
 
 %%first rotation
-x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_2(nd))+y_axis_Spin2.*sin(alpha_2(nd));
+x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_1)+y_axis_Spin2.*sin(alpha_1);
 %%second rotation
-x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))+z_axis_Spin2.*sin(beta_2(nd));
+x_axis3_Spin2=x_axis2_Spin2.*cos(beta_1)-z_axis_Spin2.*sin(beta_1);
 %%find Spin2
 Spin_2=C1b(10+(nd-1),:)+x_axis3_Spin2.*11.4;  %length of C1 and spinlabel is 11.5A
 
@@ -227,15 +237,15 @@ rotate_theta1_2(k,:)=normrnd(0,sigma_y); %range -5 to 5grad
 %second rotaion around z-axis with 5 grad
 rotate_theta2_2(k,:)=normrnd(0,sigma_z); %range -5 to 5grad
 [X2_2(k,:), Y2_2(k,:) Z2_2(k,:)] = AxisAngleRotate(X1_2(k,:),Y1_2(k,:),Z1_2(k,:),Z1_2(k,:),rotate_theta2_2(k,:));
-%second coordinatesystem for Cdot Spin label
-[xaxis2_dre(k,:),yaxis2_dre(k,:),zaxis2_dre(k,:)] = AxisAngleRotate(X2_2(k,:),Y2_2(k,:),Z2_2(k,:),Z2_2(k,:),27);
 %find electron center
-M2(k,:)=N1C2_2(k,:)+X2_2(k,:)*(2.3+0.688*1.5)+xaxis2_dre(k,:)*(3.959*1.5+0.7);
+M2(k,:)=N1C2_2(k,:)+X2_2(k,:)*((sqrt(7^2-0.75^2)+sqrt(8.2^2-0.75^2))/2+2.3);
 
 
 end 
 R=M2-M;
-[o1,o2,r]=RuCoordv1(R,xaxis1_dre,yaxis1_dre,zaxis1_dre,xaxis2_dre,yaxis2_dre,zaxis2_dre);
+% [o1,o2,r]=RuCoordv1(R,X_Spin1,Y_Spin1,Z_Spin1,X_Spin2,Y_Spin2,Z_Spin2);
+[o1,o2,r]=RuCoordv1(R,X2,Y2,Z2,X2_2,Y2_2,Z2_2);
+
 Conformers.M=M;
 Conformers.M2=M2;
 % Conformers.R=R;
@@ -251,16 +261,18 @@ Conformers.Distance = r/10;
 % R_mean=sum(Conformers.Distance)/length(Conformers.Distance);
 pd=fitdist(Conformers.Distance,'Normal');
 R_mean=pd.mu;
-% sigma=pd.sigma;
+sigma=pd.sigma;
+FWHM=2.3548*sigma;
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % mean_trend=mean(trend);
-h=histfit(Conformers.Distance);
-h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
-h(2).Color = [1 0 0];
-y=get(h,'YData');
-y1=cell2mat(y(1));
-ymax=max(y1);
+% h=histfit(Conformers.Distance);
+% h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
+% h(2).Color = [1 0 0];
+% y=get(h,'YData');
+% y1=cell2mat(y(1));
+% ymax=max(y1);
 % Distance(nd,:)=r/10;
 end
 

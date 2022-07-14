@@ -1,5 +1,6 @@
+
 % for nd=5:14
-clear;
+% clear;
 Band = "Xband";
 EP = importdata('ExperimentalParameters.mat');
 dsDNA.Xband.EP.Sequence = EP.Sequence;
@@ -84,20 +85,23 @@ sigma_y=6;
 % for i=1:100
 % alpha=76.2/360*2*pi;               %first rotation angle alpha
 % beta(i)=beta_range(i)/360*2*pi;                %second rotation angle beta
-% % [Simulated,R_mean,sigma] = AMPELDOR_DNA(nr,EP,zeit);
+% % [Simulated,R_mean,sigma] = AMPELDOR_DNA(nr,EP,zeit,'A');
 % sigma_y=0;
-[Simulated,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nr,EP,zeit);
+% [Simulated,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'A');
+[Simulated,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'B');
 % R_mean_all(nd-4,:)=R_mean;
 % FWHM_all(nd-4,:)=FWHM;
 % end
 
+%%Model C
+% [Simulated] = AM_C_PELDOR_DNA(nr,EP,zeit,'A');
 
 % % Model A/B change sigma_y
 % N=length(Experimental.Sexp(:,1));
 % o=0.1;
 % for i=1:11
 % sigma_y=0+(i-1)*2;
-% Simulated = AMPELDOR_DNA(sigma_y,nr,EP,zeit);
+% Simulated = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'A');
 % [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
 % Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
 % SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
@@ -107,50 +111,24 @@ sigma_y=6;
 % % RSMD_alloffset=sigma(:,1);
 % [m,n]=min(RSMD_alloffset);
 % sigma_y_best=(n-1)*2;
-% [Simulated,R_mean,sigma] = AMPELDOR_DNA(sigma_y_best,nr,EP,zeit);
+% [Simulated,R_mean,sigma] = AMPELDOR_DNA(sigma_y_best,nr,EP,zeit,'A');
 % % % 
 
-% Model C
-% N=length(Experimental.Sexp(:,1));
-% zero=zeros(N,6);
-% 
-% for w=1:21
-% Simulate = AM_C_PELDOR_DNA(w,nr,EP,zeit);
-% zero=zero+Simulate.Sexp;
-% end 
-% Simulated.Sexp=zero/21;
 
 % PLOT
 [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
 o = 0.1; 
 Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
 SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
-% Dis(i)=sqrt(sum((SC(:,1)-Experimental.stack(:,1)).^2,1)/198);
-% end 
-% [m,n]=min(Dis);
-% beta_1=beta(n)/2/pi*360
-
-% % 
-% % % 
-% F=figure(1)
-% 
-% xlabel('Distance [nm]');
-% ylabel('Probability')
-
 
 F=figure(2);
-% % F=open('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\PELDOR_result\1_9_B.fig')
+
 % plot(zeit*1000,SC,'r','LineWidth',2)
 plot(zeit*1000,SC,'b','LineWidth',2)
-% 
 hold on
 plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
-% % 
 xlabel('Time [ns]');
 ylabel('Signal intensity')
-
-% 
-
 str2=num2str(sigma_y);
 title(['Ç DNA1-',str,' (',str2,'^o)']);
 axis([0 t_max 0.3 1.5]);
@@ -162,8 +140,8 @@ set(gca,'linewidth',1.5)
 % saveas(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\ModelA1_',str,'.png'])
 
 
-savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\ModelA1_',str,'.fig'])
-savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\',['ModelA1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\CDNAModelB1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\',['CDNAModelB1_',str,'.pdf'])
 
 % savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelB\helixdy_SL\ModelB1_',str,'.fig'])
 % savePDF('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelB\helixdy_SL\',['ModelB1_',str,'.pdf'])
@@ -176,3 +154,39 @@ savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\',['Mo
 % clear;
 % clf;
 % end 
+
+
+% importdata(['C_DNA_1_',str,'_distr.dat']);
+% hold on 
+% plot(ans(:,1),ymax/max(ans(:,2)).*ans(:,2),'k','Linewidth',2)
+% xlim([1 5])
+% xlabel('distance [nm]')
+% ylabel('no. of occurences')
+% xticks([1 2 3 4 5 6])
+% xlim([1 5])
+% 
+% 
+% F=figure(1);
+% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+%     [1 2 3 4 5 6]);
+% set(gca,'linewidth',1.5) 
+% xlabel('Distance [nm]')
+% ylabel('no. of occurences')
+% if str2num(str)<12
+%     xlim([1 5])
+% else 
+%     xlim([2 6])
+% end 
+% str2=num2str(sigma_y);
+% title(['Ç DNA1-',str,' (',str2,'^o)']);
+% % title(['C DNA1-',str,' (',str2,'^o)']);
+% set(gca,'linewidth',1.5) 
+% 
+% % 
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelA\CDNA_ModelA1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelA\',['CDNA_ModelA1_',str,'.pdf'])
+% % 
+% clear;
+% clf;
+% end 
+

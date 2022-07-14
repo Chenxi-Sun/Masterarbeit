@@ -84,12 +84,12 @@ ylabel('no. of occurences')
 xlim([1 5])
 % xlim([2 6])
 str2=num2str(sigma_y);
-title(['Ç DNA1-',str,' (',str2,'^o)']);
-% title(['C DNA1-',str,' (',str2,'^o)']);
+% title(['Ç DNA1-',str,' (',str2,'^o)']);
+title(['C DNA1-',str,' (',str2,'^o)']);
 set(gca,'linewidth',1.5) 
 
 % 
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\Distr_ModelA1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelA_6grad\',['Distr_ModelA1_',str,'.pdf'])
+savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\Distr_CDNA_ModelB1_',str,'.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\',['Distr_CDNA_ModelB1_',str,'.pdf'])
 % savefig(F,['Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelB_6grad\Distr_CdotModelB1_',str,'.fig'])
 % savePDF('Z:\Students\ChSun\Masterarbeit\Seminar_06.07_CS\DNA_ModelB_6grad\',['Distr_CdotModelB1_',str,'.pdf'])
