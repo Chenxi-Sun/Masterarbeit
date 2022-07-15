@@ -15,7 +15,7 @@ n_bp=1:1:20; %20base pair
 nd=nd-7;
 %%initial position for C from pymol
 
-%parameter for expression for C1-points at RNA
+%parameter for expression for C1-points at AprRNA
 r0=8.837;
 h0=35.5686;
 b=0.522;
@@ -63,12 +63,12 @@ z_axis=[0 0 1];
 
 %%rotationsangle 1st SL
 alpha_1=74.42/360*2*pi;
-% beta_1=5.2/360*2*pi; 
-beta_1=3.6/360*2*pi; 
+beta_1=5.2/360*2*pi; 
+% beta_1=3.6/360*2*pi; 
 
 %%rotationsangle 2nd SL 8-15 bp; (5-7)samples dont exist
-% alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
-% beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
+alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
+beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
 
 
 
@@ -206,9 +206,9 @@ y_axis_Spin2=cross(x_axis1_Spin2,z_axis_Spin2);
 y_axis_Spin2=y_axis_Spin2/norm(y_axis_Spin2);
 
 %%first rotation
-x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_1)+y_axis_Spin2.*sin(alpha_1);
+x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_2(nd))+y_axis_Spin2.*sin(alpha_2(nd));
 %%second rotation
-x_axis3_Spin2=x_axis2_Spin2.*cos(beta_1)-z_axis_Spin2.*sin(beta_1);
+x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))-z_axis_Spin2.*sin(beta_2(nd));
 %%find Spin2
 Spin_2=C1b(10+(nd-1),:)+x_axis3_Spin2.*11.4;  %length of C1 and spinlabel is 11.5A
 
@@ -264,8 +264,8 @@ R_mean=pd.mu;
 sigma=pd.sigma;
 FWHM=2.3548*sigma;
 zeiten = zeit*1000;
-Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % mean_trend=mean(trend);
 % h=histfit(Conformers.Distance);
 % h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
@@ -274,6 +274,8 @@ Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time ax
 % y1=cell2mat(y(1));
 % ymax=max(y1);
 % Distance(nd,:)=r/10;
+str2=num2str(nd+7);
+save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA\',['Conformere for ApriRNA1_',str2,'Model_',str,'.mat']],'Conformers')
 end
 
 % for s=1:8

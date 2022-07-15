@@ -4,28 +4,28 @@ load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\expDistances.mat
 n_bp=1:20;
 
 % %parameter for expression for C1-points at ApriRNA
-r0=8.837;
-h0=35.5686;
-b=0.522;
-c1_x=3.565;
-c1_y=1.983;
-c2_x=-1.468;
-c2_y=3.273;
-d=2.955;
-e1=-2.177;
-e2=-3.728;
+% r0=8.837;
+% h0=35.5686;
+% b=0.522;
+% c1_x=3.565;
+% c1_y=1.983;
+% c2_x=-1.468;
+% c2_y=3.273;
+% d=2.955;
+% e1=-2.177;
+% e2=-3.728;
 
 %parameter for expression for C1-points at A-RNA
-% r0=8.284;
-% h0=29.8476;
-% b=0.5709;
-% c1_x=3.468;
-% c1_y=1.908;
-% c2_x=-1.457;
-% c2_y=3.265;
-% d=2.712;
-% e1=-1.527;
-% e2=-3.944;
+r0=8.284;
+h0=29.8476;
+b=0.5709;
+c1_x=3.468;
+c1_y=1.908;
+c2_x=-1.457;
+c2_y=3.265;
+d=2.712;
+e1=-1.527;
+e2=-3.944;
 
 %helix.A
 x1=r0*sin(b.*n_bp+c1_x);
@@ -144,7 +144,7 @@ rmsd(i)=sum((expDistances.RNA.meandist-Distance').^2,2)/8;
 end 
 [m,n]=min(rmsd);
 best_ratio=1+(n-1)*0.01;
-
+% best_ratio=1
 new_z1_2=new_z1*best_ratio;
 new_z2_2=new_z2*best_ratio;
 %new C1a/C1b position
@@ -192,3 +192,4 @@ end
 plot(8:15,Distance,'Linewidth',3,'Marker','o');
 hold on 
 plot(8:15,expDistances.RNA.meandist,'Linewidth',3,'Marker','o')
+

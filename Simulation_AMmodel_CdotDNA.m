@@ -13,9 +13,7 @@ dsDNA.Xband.EP.Sequence = EP.Sequence;
 dsDNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsDNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsDNA.Xband.EP.Settings.B0 = EP.Settings.B0;
-
 sigma_y=6;
-
 switch Band
     case "Gband"
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\DNA1_9dot.mat')
@@ -26,7 +24,7 @@ Experimental.Sexp(:,4)=DNA1_9dot.Gband.Sexp(:,4);
 Experimental.Sexp(:,5)=DNA1_9dot.Gband.Sexp(:,5);
 zeit=DNA1_9dot.Gband.time;
 
-Simulated = AMPELDOR_CdotDNA(sigma_y,9,EP,zeit,'B')
+Simulated = AMPELDOR_CdotDNA(sigma_y,9,EP,zeit,'A')
 
 [devn,SC] = ScaleModdev('single',Experimental.Sexp,Simulated.Sexp);
 o = 0.02; 
@@ -76,5 +74,5 @@ set(gca,'linewidth',1.5)
 % saveas(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\AMmodelA\helixdy_SL\ModelA1_',str,'.png'])
 
 
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\Distr_CdotModelB1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelB\',['Distr_CdotModelB1_',str,'.pdf'])
+savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\CDNA_ModelA\Gband_CdotDNA_ModelA1_',str,'.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\CDNA_ModelA\',['Gband_CdotDNA_ModelA1_',str,'.pdf'])

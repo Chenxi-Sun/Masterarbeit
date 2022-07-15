@@ -1,7 +1,7 @@
 %% 
 % function [Result,R_mean] = AM_PELDOR_RNA(sigma_r,nd,EP,zeit)
 % function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_r,nd,EP,zeit)
-function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
+function [Result,R_mean,ymax] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
 % % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
 % for nd=8:15
 str='A';
@@ -13,7 +13,7 @@ n_bp=1:1:20; %20base pair
 % sigma_r=1;
 nd=nd-7;
 
-%parameter for expression for C1-points at RNA
+%parameter for expression for C1-points at ARNA
 r0=8.284;
 h0=29.8476;
 b=0.5709;
@@ -24,6 +24,18 @@ c2_y=3.265;
 d=2.712;
 e1=-1.527;
 e2=-3.944;
+
+%parameter for expression for C1-points at RNA
+% r0=8.837;
+% h0=35.5686;
+% b=0.522;
+% c1_x=3.565;
+% c1_y=1.983;
+% c2_x=-1.468;
+% c2_y=3.273;
+% d=2.955;
+% e1=-2.177;
+% e2=-3.728;
 
 %helix.A
 x1=r0*sin(b.*n_bp+c1_x);
@@ -135,6 +147,8 @@ end
 
 %%%%new coordinate calculation
 %new C1a/C1b position
+new_z1=1.12*new_z1;
+new_z2=1.12*new_z2;
 C1a=[new_x1;new_y1;new_z1]';
 C1b=[new_x2;new_y2;new_z2]';
 
@@ -151,7 +165,7 @@ y_axis_Spin1=y_axis_Spin1/norm(y_axis_Spin1);
 %%first rotation
 x_axis2_Spin1=x_axis1_Spin1.*cos(alpha_1)-y_axis_Spin1.*sin(alpha_1);
 %%second rotation
-x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)-z_axis_Spin1.*sin(beta_1);
+x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)+z_axis_Spin1.*sin(beta_1);
 %%find Spin1
 Spin_1=C1a(3,:)+x_axis3_Spin1.*11.4;  %length of C1 and spinlabel is 11.4A
 % 
@@ -198,7 +212,7 @@ y_axis_Spin2=y_axis_Spin2/norm(y_axis_Spin2);
 %%first rotation
 x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_2(nd))+y_axis_Spin2.*sin(alpha_2(nd));
 %%second rotation
-x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))+z_axis_Spin2.*sin(beta_2(nd));
+x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))-z_axis_Spin2.*sin(beta_2(nd));
 %%find Spin2
 Spin_2=C1b(10+(nd-1),:)+x_axis3_Spin2.*11.4;  %length of C1 and spinlabel is 11.5A
 
@@ -238,30 +252,24 @@ R=M2-M;
 [o1,o2,r]=RuCoordv1(R,xaxis1_dre,yaxis1_dre,zaxis1_dre,xaxis2_dre,yaxis2_dre,zaxis2_dre);
 Conformers.M=M;
 Conformers.M2=M2;
-% Conformers.R=R;
 Conformers.EulerAngles.R1=[o1(:,:)];
-% Conformers.EulerAngles.R1(:,2)=Conformers.EulerAngles.R1(:,2)+ones(length(Conformers.EulerAngles.R1(:,2)),1)*deg2rad(10);
 Conformers.EulerAngles.R2=[o2(:,:)];
-% Conformers.EulerAngles.R2(:,2)=Conformers.EulerAngles.R2(:,2)+ones(length(Conformers.EulerAngles.R2(:,2)),1)*deg2rad(10);
-% load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\r_y_6_grad_rot\delta_Distance.mat')
-% Conformers.Distance = r/10+delta_Distance(nd);
-% load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\AMmodel_result\delta_Distance_sphere.mat')
-% Conformers.Distance = r/10+delta_Distance_sphere(nd);
 Conformers.Distance = r/10;
-% R_mean=sum(Conformers.Distance)/length(Conformers.Distance);
 pd=fitdist(Conformers.Distance,'Normal');
 R_mean=pd.mu;
 % sigma=pd.sigma;
 zeiten = zeit*1000;
-Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-% mean_trend=mean(trend);
-h=histfit(Conformers.Distance);
-h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
-h(2).Color = [1 0 0];
-y=get(h,'YData');
-y1=cell2mat(y(1));
-ymax=max(y1);
+% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+% h=histfit(Conformers.Distance);
+% h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
+% h(2).Color = [1 0 0];
+% y=get(h,'YData');
+% y1=cell2mat(y(1));
+% ymax=max(y1);
 % Distance(nd,:)=r/10;
+% str2=num2str(nd+7);
+% save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA\',['Conformere for CmdotApriRNA1_',str2,'Model_',str,'.mat']],'Conformers')
 end
 
 % for s=1:8

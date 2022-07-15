@@ -11,7 +11,7 @@ load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 % load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 % nd='Which 2nd position? (8-15):';
 % str=input(nd,'s');
-
+% % 
 %     
 str=num2str(nr);
 
@@ -96,8 +96,8 @@ end
 
 % 
 sigma_y=4;
-% [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
-[Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit,'A');
+[Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
+% [Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit,'B');
 % R_mean_all(nr-7,:)=R_mean;
 % FWHM_all(nr-7,:)=FWHM;
 % end
@@ -211,17 +211,17 @@ set(gca,'FontSize',14,'FontWeight','bold','XTick',...
     [1 1.05 1.1]);
 end
 set(gca,'linewidth',1.5) 
-
-
-% % %CmRNAModelB
-savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA_ModelA_Gband\Gband_CmApriRNA_ModelA1_',str,'.fig'])
-savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA_ModelA_Gband\',['Gband_CmApriRNA_ModelA1_',str,'.pdf'])
+% 
+% 
+% % % % %CmRNAModelB
+savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Gband\Gband_CmARNA_ModelB1_',str,'.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Gband\',['Gband_CmARNA_ModelB1_',str,'.pdf'])
+% % % % 
+% % % %CmRNAmodelA
+% % savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\Gband_CmRNA_ModelB1_',str,'.fig'])
+% % savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\',['Gband_CmRNA_ModelB1_',str,'.pdf'])
 % % % 
-% % %CmRNAmodelA
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\Gband_CmRNA_ModelB1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\',['Gband_CmRNA_ModelB1_',str,'.pdf'])
-% % 
-% % % 
+% % % % 
 clear;
 clf;
 end 

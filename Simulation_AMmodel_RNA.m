@@ -1,4 +1,4 @@
-% for nr=8:15
+for nr=8:15
 % clear;
 Band = "Xband";
 EP = importdata('ExperimentalParameters.mat');
@@ -9,11 +9,11 @@ dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 % load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-nd='Which 2nd position? (8-15):';
-str=input(nd,'s');
+% nd='Which 2nd position? (8-15):';
+% str=input(nd,'s');
 
     
-% str=num2str(nr);
+str=num2str(nr);
 
 switch (str)
  case '8'
@@ -107,9 +107,9 @@ sigma_y=4;
 
 % % % 
 % sigma_y=0;
-% [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit);
-[Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit);
-% [Simulated,R_mean,FWHM,ymax] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit);
+[Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'A');
+% [Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit);
+% [Simulated,R_mean,FWHM,ymax] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
 % [Simulated,R_mean,FWHM,ymax] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit);
 % R_mean_all(nr-7,:)=R_mean;
 % FWHM_all(nr-7,:)=FWHM;
@@ -137,28 +137,28 @@ sigma_y=4;
 
 
 %PLOT
-% % 
-[devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
-o = 0.1; 
-Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
-SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
+% 
+% [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
+% o = 0.1; 
+% Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o,Experimental.Sexp(:,3)+2*o,Experimental.Sexp(:,4)+3*o,Experimental.Sexp(:,5)+4*o,Experimental.Sexp(:,6)+5*o];
+% SC = [SC(:,1),SC(:,2)+o,SC(:,3)+o*2,SC(:,4)+o*3,SC(:,5)+o*4,SC(:,6)+o*5];
+% 
+% 
+% F=figure(2);
+% plot(zeit*1000,SC,'r','LineWidth',2)
+% hold on
+% plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
+% xlabel('Time [ns]');
+% ylabel('Signal intensity')
+% str2=num2str(sigma_y);
+% title(['Çm RNA1-',str,' (',str2,'^o)']);
+% axis([0 t_max 0.3 1.5]);
+% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+%     [0 500 1000 1500 2000 2500 3000]);
+% set(gca,'linewidth',1.5) 
 
 
-F=figure(2);
-plot(zeit*1000,SC,'r','LineWidth',2)
-hold on
-plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
-xlabel('Time [ns]');
-ylabel('Signal intensity')
-str2=num2str(sigma_y);
-title(['Çm RNA1-',str,' (',str2,'^o)']);
-axis([0 t_max 0.3 1.5]);
-set(gca,'FontSize',14,'FontWeight','bold','XTick',...
-    [0 500 1000 1500 2000 2500 3000]);
-set(gca,'linewidth',1.5) 
-
-
-% %%CmRNA
+%%CmRNA
 % Exp=importdata(['SumX_CmRNA1_',str,'_distr.dat']);
 % hold on 
 % plot(Exp(:,1),ymax/max(Exp(:,2)).*Exp(:,2),'k','Linewidth',2)
@@ -185,8 +185,8 @@ set(gca,'linewidth',1.5)
 % % 
 % % 
 % % %CmRNAModelB
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA_ModelA_Xband\Distr_CmApriRNAModelA1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA_ModelA_Xband\',['Distr_CmApriRNAModelA1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Xband\Xband_CmARNAModelB1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Xband\',['Xband_CmARNAModelB1_',str,'.pdf'])
 % % % 
 % % %CmRNAmodelA
 % % % savefig(F,['Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\AMmodelB\CmRNAModelB1_',str,'.fig'])

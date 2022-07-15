@@ -240,10 +240,12 @@ Conformers.Distance = r/10;
 % R_mean=pd.mu;
 % sigma=pd.sigma;
 zeiten = zeit*1000;
-Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % mean_trend=mean(trend);
 % h=histfit(Conformers.Distance);
 % h(1).FaceColor = [.3 .75 .93];
 % h(2).Color = [.0 .0 1];
+str2=num2str(nd+4);
+save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\',['Conformere for CdotDNA1_',str2,'Model_',str,'.mat']],'Conformers')
 end 
