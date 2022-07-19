@@ -1,7 +1,7 @@
 % function [Result,R_mean,FWHM,ymax] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
-function [Result] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
+% function [Result] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
 % 
-% nd=6;
+nd=6;
 nd=nd-4;
 sigma_y=0;
 sigma_z=0;
@@ -63,16 +63,16 @@ y2_dre=C1b_dre(1:20,2);
 z2_dre=C1b_dre(1:20,3);
 
 %bending angle
-for k=1:20
-alpha=normrnd(0,28)/360*2*pi;
-if alpha<0
-    alpha=-alpha;
-elseif alpha==0
-    alpha=normrnd(0,28)/360*2*pi;
-else
-    alpha=alpha;
-% alpha=28/360*2*pi;
-end 
+for k=1:5
+% alpha=normrnd(0,28)/360*2*pi;
+% if alpha<0
+%     alpha=-alpha;
+% elseif alpha==0
+%     alpha=normrnd(0,28)/360*2*pi;
+% else
+%     alpha=alpha;
+alpha=28/360*2*pi;
+% end 
 
 R1=(z1(20)-z1(1))/alpha;
 R2=(z2(20)-z2(1))/alpha;
@@ -187,21 +187,23 @@ X2_2_2d=X2_2(:,:,1);
 Y2_2_2d=Y2_2(:,:,1);
 Z2_2_2d=Z2_2(:,:,1);
 
-for s=1:w-1
+for s=1:360
 M2_2d=vertcat(M2_2d,M2(:,:,s+1));M_2d=vertcat(M_2d,M(:,:,s+1));
 X2_2d=vertcat(X2_2d,X2(:,:,s+1));Y2_2d=vertcat(Y2_2d,Y2(:,:,s+1));Z2_2d=vertcat(Z2_2d,Z2(:,:,s+1));
-X2_2_2d=vertcat(X2_2_2d,X2_2(:,:,s+1));Y2_2_2d=vertcat(Y2_2_2d,Y2_2(:,:,s+1));Z2_2_2d=vertcat(Z2_2_2d,Z2_2(:,:,s+1));
+X2_2_2d=vertcat(X2_2_2d,X2_2(:,:,s+1));Y2_2_2d=vertcat(Y2_2_2d,Y2_2(:,:,s+1));Y2_2_2d=vertcat(Y2_2_2d,Y2_2(:,:,s+1));
 end 
 
 
 R=M2_2d-M_2d;
 [o1,o2,r]=RuCoordv1(R,X2_2d,Y2_2d,Z2_2d,X2_2_2d,Y2_2_2d,Z2_2_2d);
 
-Conformers.M=M_2d;
-Conformers.M2=M2_2d;
+Conformers.M=M;
+Conformers.M2=M2;
 Conformers.EulerAngles.R1=[o1(:,:)];
 Conformers.EulerAngles.R2=[o2(:,:)];
 Conformers.Distance = r/10;
+pd=fitdist(Conformers.Distance,'Normal'); %fit distances to a normal distribution
+
 pd=fitdist(Conformers.Distance,'Normal'); %fit distances to a normal distribution
 R_mean=pd.mu;
 sigma=pd.sigma;  %sigma value of normal distribution
@@ -209,12 +211,12 @@ FWHM=2.3548*sigma;  %FWHM
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
 % Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-% h=histfit(Conformers.Distance);   %plot distribution
-% h(1).FaceColor = [.3 .75 .93];
-% h(2).Color = [.0 .0 1];
-% y=get(h,'YData');  
-% y1=cell2mat(y(1));
-% ymax=max(y1);     %%max value of histogramm
-end 
+h=histfit(Conformers.Distance);   %plot distribution
+h(1).FaceColor = [.3 .75 .93];
+h(2).Color = [.0 .0 1];
+y=get(h,'YData');  
+y1=cell2mat(y(1));
+ymax=max(y1);     %%max value of histogramm
+% end 
 
 

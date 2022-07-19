@@ -1,5 +1,5 @@
 
-% for nd=5:14
+for nd=5:14
 % clear;
 Band = "Xband";
 EP = importdata('ExperimentalParameters.mat');
@@ -12,10 +12,10 @@ dsDNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
 % load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_DNA\dsDNA_Cspin.mat');
 
-nd='Which 2nd position? (5-14):';
-str=input(nd,'s');
+% nd='Which 2nd position? (5-14):';
+% str=input(nd,'s');
 
-% str=num2str(nd);
+str=num2str(nd);
 
 t_max=2000;
 
@@ -78,7 +78,7 @@ t_max=3000;
 
 end
 
-sigma_y=6;
+sigma_y=0;
 
 %%Model A/B
 % 
@@ -87,14 +87,17 @@ sigma_y=6;
 % beta(i)=beta_range(i)/360*2*pi;                %second rotation angle beta
 % % [Simulated,R_mean,sigma] = AMPELDOR_DNA(nr,EP,zeit,'A');
 % sigma_y=0;
-% [Simulated,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'A');
-[Simulated,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'B');
+% [Simulated,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'B');
+% [Simulated,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nr,EP,zeit,'B');
 % R_mean_all(nd-4,:)=R_mean;
 % FWHM_all(nd-4,:)=FWHM;
 % end
 
 %%Model C
-% [Simulated] = AM_C_PELDOR_DNA(nr,EP,zeit,'A');
+tic
+[Simulated] = AM_C_PELDOR_DNA(sigma_y,nr,EP,zeit);
+% [Simulated,R_mean,FWHM,ymax] = AM_C_PELDOR_DNA(sigma_y,nr,EP,zeit);
+toc
 
 % % Model A/B change sigma_y
 % N=length(Experimental.Sexp(:,1));
@@ -181,12 +184,12 @@ set(gca,'linewidth',1.5)
 % title(['Ç DNA1-',str,' (',str2,'^o)']);
 % % title(['C DNA1-',str,' (',str2,'^o)']);
 % set(gca,'linewidth',1.5) 
-% 
+
 % % 
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelA\CDNA_ModelA1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA_ModelA\',['CDNA_ModelA1_',str,'.pdf'])
+savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\ModelC_sigma_alpha=28\CDNA_ModelC_y=0\CDNA_ModelC1_',str,'.fig'])
+savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\ModelC_sigma_alpha=28\CDNA_ModelC_y=0\',['CDNA_ModelC1_',str,'.pdf'])
 % % 
-% clear;
-% clf;
-% end 
+clear;
+clf;
+end 
 

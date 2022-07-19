@@ -1,5 +1,5 @@
-% function [Result,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nd,EP,zeit,str)
-function [Result,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nd,EP,zeit)
+function [Result,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nd,EP,zeit,str)
+% function [Result,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nd,EP,zeit)
 % function [Result] = AMPELDOR_DNA(nd,sigma_r,EP,zeit)
 % nd=5;
 % for nd=5:14
@@ -236,14 +236,14 @@ R_mean=pd.mu;
 sigma=pd.sigma;  %sigma value of normal distribution
 FWHM=2.3548*sigma;  %FWHM 
 zeiten = zeit*1000;
-% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
-Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-% h=histfit(Conformers.Distance);   %plot distribution
-% h(1).FaceColor = [.3 .75 .93];
-% h(2).Color = [.0 .0 1];
-% y=get(h,'YData');  
-% y1=cell2mat(y(1));
-% ymax=max(y1);     %%max value of histogramm
+Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+h=histfit(Conformers.Distance);   %plot distribution
+h(1).FaceColor = [.3 .75 .93];
+h(2).Color = [.0 .0 1];
+y=get(h,'YData');  
+y1=cell2mat(y(1));
+ymax=max(y1);     %%max value of histogramm
 % Distance(nd,:)=r/10;
 end 
 % 

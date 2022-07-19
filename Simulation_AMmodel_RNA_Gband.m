@@ -1,4 +1,4 @@
-for nr=8:15
+% for nr=8:15
 % clear;
 Band = "Gband";
 EP = importdata('ExpParG_RNA1_10.mat');
@@ -9,11 +9,11 @@ dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
 load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
 % load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-% nd='Which 2nd position? (8-15):';
-% str=input(nd,'s');
+nd='Which 2nd position? (8-15):';
+str=input(nd,'s');
 % % 
 %     
-str=num2str(nr);
+% str=num2str(nr);
 
 switch (str)
  case '8'
@@ -95,9 +95,11 @@ end
 % [Simulated,R_mean] = AM_PELDOR_RNA(sigma_h_min,nr,EP,zeit);
 
 % 
-sigma_y=4;
-[Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
+sigma_y=0;
+% [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
 % [Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit,'B');
+
+[Simulated,R_mean,FWHM] = AM_C_PELDOR_RNA(sigma_y,nr,EP,zeit);
 % R_mean_all(nr-7,:)=R_mean;
 % FWHM_all(nr-7,:)=FWHM;
 % end
@@ -214,14 +216,14 @@ set(gca,'linewidth',1.5)
 % 
 % 
 % % % % %CmRNAModelB
-savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Gband\Gband_CmARNA_ModelB1_',str,'.fig'])
-savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\CmRNA_ModelB_Gband\',['Gband_CmARNA_ModelB1_',str,'.pdf'])
+% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_falscheRichtung\CmRNA_ModelB_Gband_y=0\Gband_CmARNA_ModelB1_',str,'.fig'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_falscheRichtung\CmRNA_ModelB_Gband_y=0\',['Gband_CmARNA_ModelB1_',str,'.pdf'])
 % % % % 
 % % % %CmRNAmodelA
 % % savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\Gband_CmRNA_ModelB1_',str,'.fig'])
 % % savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\',['Gband_CmRNA_ModelB1_',str,'.pdf'])
 % % % 
 % % % % 
-clear;
-clf;
-end 
+% clear;
+% clf;
+% end 

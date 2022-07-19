@@ -22,7 +22,7 @@ a=dot(Z0(k1,:),Z1(k1,:));
 %     X0=X1; Y0=Y1; Z0=Z1;
 % else
     L(k1,:)=cross(Z0(k1,:),Z1(k1,:));
-    X0(k1,:)=L(k1,:)./sqrt(dot(L(k1,:),L(k1,:)));
+    X0(k1,:)=L(k1,:)./sqrt(dot(L(k1,:),L(k1,:)));  %sqrt(dot(L(k1,:),L(k1,:)))=norm(L(k1,:))
     Y0(k1,:)=cross(Z0(k1,:),X0(k1,:));
 %  end
 

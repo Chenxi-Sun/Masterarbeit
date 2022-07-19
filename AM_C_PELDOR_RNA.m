@@ -1,17 +1,14 @@
-% function [Result,R_mean,FWHM,ymax] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit,str)
-% function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit,str)
-% function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
-% for nd=8:15
-str='B';
-sigma_y=0;
-sigma_z=0;
-%%Parameter extracted from pymol and fitted by cftool
-n_bp=1:1:20; %20base pair
+% function [Result,R_mean,FWHM] = AM_C_PELDOR_RNA(sigma_y,nd,EP,zeit)
+% 
 nd=9;
 nd=nd-7;
-%%initial position for C from pymol
+% sigma_y=0;
+sigma_z=0;
 
-%parameter for expression for C1-points at RNA
+%%Parameter extracted from pymol and fitted by cftool
+n_bp=1:1:20; %20base pair
+
+% %parameter for expression for C1-points at DNA from pymol
 r0=8.284;
 h0=29.8476;
 b=0.5709;
@@ -33,111 +30,57 @@ x2=r0*sin(b.*n_bp+c2_x);
 y2=r0*sin(b.*n_bp+c2_y);
 z2=d.*n_bp+e2;
 
-%end-end length
-L0=z2(20)-z1(1);
-
-%contour length C
-C=sqrt((2*pi*r0)^2*L0^2/h0^2+L0^2); %countor length (AM paper)
-
-%n_turns
-n_turns=b.*19/2/pi;  %the range of b.*n_bp+c1 = how much 2pi = how much turns
 
 %z_axis
 z_axis=[0 0 1];
 
+%drehen die koordinatensystem
+Z_axis=[0 0 1];
+X_axis=[1 0 0];
+Y_axis=[0 1 0];
 
 %%rotationsangle 1st SL
 alpha_1=74.42/360*2*pi;
 beta_1=5.2/360*2*pi; 
-% beta_1=3.7/360*2*pi; 
 %%rotationsangle 2nd SL 8-15 bp; (5-7)samples dont exist
 alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
 beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
 
+%bending direction
+for k=1:361
+theta=(k-1);
+[new_X, new_Y, new_Z]=AxisAngleRotate(X_axis,Y_axis,Z_axis,Z_axis,theta);
+C1a_dre=[new_X;new_Y;new_Z]\[x1;y1;z1];
+C1a_dre=C1a_dre';
+x1_dre=C1a_dre(1:20,1);
+y1_dre=C1a_dre(1:20,2);
+z1_dre=C1a_dre(1:20,3);
+C1b_dre=[new_X;new_Y;new_Z]\[x2;y2;z2];
+C1b_dre=C1b_dre';
+x2_dre=C1b_dre(1:20,1);
+y2_dre=C1b_dre(1:20,2);
+z2_dre=C1b_dre(1:20,3);
 
-p=500;
-for k=1:p
-switch (str)
-    case 'B'
-% parameter
-% deltar=normrnd(0,sigma_r);   %standard deviation of radius=0.65 
-deltar=normrnd(0,0.9);   %standard deviation of radius=0.65 
-% deltar=0;
-r=r0+deltar;
-deltaL=-deltar*20/3.8;  %AM paper
-L=L0+deltaL; 
+%bending angle
+alpha=28/360*2*pi;
+R1=(z1(20)-z1(1))/alpha;
+R2=(z2(20)-z2(1))/alpha;
 
-new_turns=n_turns.*sqrt((2*pi*r0)^2+h0^2)/sqrt((2*pi*r)^2+h0^2); %countor length=n_turns*sqrt((2pir)^2+h^2)
+for i=1:20
+phi_1(i)=(z1_dre(i)-z1_dre(1))/(z1_dre(20)-z1_dre(1))*alpha;
+phi_2(i)=(z2_dre(i)-z2_dre(1))/(z2_dre(20)-z2_dre(1))*alpha;
+new_x1(i)=x1_dre(i)*cos(phi_1(i));
+new_z1(i)=(R1+x1_dre(i))*sin(phi_1(i))+z1(1);
+new_x2(i)=x2_dre(i)*cos(phi_2(i));
+new_z2(i)=(R2+x2_dre(i))*sin(phi_2(i))+z1(1);
+end
 
-new_b=new_turns*2*pi/19; %the range of b.*n_bp+c1 = how much 2pi = how much turns<<<<<for r=5.85A
-new_c1_x=b+c1_x-new_b;  %keep the first position for C1a(1) (x1,y1,z1) same
-new_c1_y=b+c1_y-new_b;
-new_d=new_turns*h0/19;  
-new_e1=d+e1-new_d;
-new_c2_x=b+c2_x-new_b;
-new_c2_y=b+c2_y-new_b;
-new_e2=20*d-20*new_d+e2+deltaL; %the first position for C1b(20) is (x2,y2,z2+deltaL)
+%coordiante after bending 
+new_y1=y1_dre;
+new_y2=y2_dre;
 
-% new helix.A
-new_x1=r*sin(new_b.*n_bp+new_c1_x);
-new_y1=r*sin(new_b*n_bp+new_c1_y);
-new_z1=new_d.*n_bp+new_e1;  
-
-% new helix.B
-new_x2=r*sin(new_b.*n_bp+new_c2_x);
-new_y2=r*sin(new_b.*n_bp+new_c2_y);
-new_z2=new_d.*n_bp+new_e2;
-
-
-% %%%%% atan2(norm(cross(vector1,vector2)), dot(vector1,vector2))/2/pi*360 %angle cal
-% %%%%% vector2_proj=(dot(vector2,z_axis)/norm(z_axis))*z_axis; %projection
-% 
-% %
-
-
-
-%%
-   case 'A'
-% Model A
-% % % %parameter
-deltah=normrnd(0,5);   %standard deviation of pitch height= 3.85 
-% deltah=normrnd(0,sigma_h);
-% deltah=0;
-h=h0+deltah;
-deltaL=deltah*20/20.9712;  %AM paper
-L=L0+deltaL; 
-r=r0;
-new_turns=n_turns.*sqrt((2*pi*r0)^2+h0^2)/sqrt((2*pi*r0)^2+h^2); %countor length=n_turns*sqrt((2pir)^2+h^2)
-new_b=new_turns*2*pi/19; %the range of b.*n_bp+c1 = how much 2pi = how much turns; -0.0138: when deltar=0,keep new_b = b
-new_c1_x=b+c1_x-new_b;  %keep the first position for C1a(1) (x1,y1,z1) same
-new_c1_y=b+c1_y-new_b;
-new_d=new_turns*h/19;  
-new_e1=d+e1-new_d;
-new_c2_x=b+c2_x-new_b;
-new_c2_y=b+c2_y-new_b;
-new_e2=20*d-20*new_d+e2+deltaL; %the first position for C1b(20) is (x2,y2,z2+deltaL)
-
-% new helix.A
-new_x1=r*sin(new_b.*n_bp+new_c1_x);
-new_y1=r*sin(new_b*n_bp+new_c1_y);
-new_z1=new_d.*n_bp+new_e1;  
-
-% new helix.B
-new_x2=r*sin(new_b.*n_bp+new_c2_x);
-new_y2=r*sin(new_b.*n_bp+new_c2_y);
-new_z2=new_d.*n_bp+new_e2;
-% % 
-    otherwise
-end 
-
-%%%%new coordinate calculation
-%new C1a/C1b position
-% new_z1=1.12*new_z1;
-% new_z2=1.12*new_z2;
-C1a=[new_x1;new_y1;new_z1]';
-C1b=[new_x2;new_y2;new_z2]';
-
-%vector calculation 
+C1a(:,1)=new_x1;C1a(:,2)=new_y1;C1a(:,3)=new_z1;
+C1b(:,1)=new_x2;C1b(:,2)=new_y2;C1b(:,3)=new_z2;
 
 %vector calculation 
 x_axis1_Spin1=(C1b(3,:)-C1a(3,:))/norm(C1b(3,:)-C1a(3,:)); 
@@ -174,10 +117,10 @@ Y_Spin1(k,:)=Y_Spin1(k,:)/norm(Y_Spin1(k,:));
 % % %%rotation around N-O axis 
 %first rotaion around y-axis with 6 grad
 rotate_theta1_1(k,:)=normrnd(0,sigma_y); 
-[X1(k,:), Y1(k,:) Z1(k,:)] = AxisAngleRotate(X_Spin1(k,:),Y_Spin1(k,:),Z_Spin1(k,:),Y_Spin1(k,:),rotate_theta1_1(k,:));
+[X1(k,:), Y1(k,:), Z1(k,:)] = AxisAngleRotate(X_Spin1(k,:),Y_Spin1(k,:),Z_Spin1(k,:),Y_Spin1(k,:),rotate_theta1_1(k,:));
 %second rotation around z-axis with 5 grad
 rotate_theta2_1(k,:)=normrnd(0,sigma_z); 
-[X2(k,:), Y2(k,:) Z2(k,:)] = AxisAngleRotate(X1(k,:),Y1(k,:),Z1(k,:),Z1(k,:),rotate_theta2_1(k,:));
+[X2(k,:), Y2(k,:), Z2(k,:)] = AxisAngleRotate(X1(k,:),Y1(k,:),Z1(k,:),Z1(k,:),rotate_theta2_1(k,:));
 %find electron center
 M(k,:)=N1C2_1(k,:)+X2(k,:)*((sqrt(7^2-0.75^2)+sqrt(8.2^2-0.75^2))/2+2.3);
 
@@ -222,10 +165,10 @@ Y_Spin2(k,:)=Y_Spin2(k,:)/norm(Y_Spin2(k,:));
 % % % %%rotation around N-O axis 
 %first rotaion around y-axis with 6 grad
 rotate_theta1_2(k,:)=normrnd(0,sigma_y); %range -5 to 5grad
-[X1_2(k,:), Y1_2(k,:) Z1_2(k,:)] = AxisAngleRotate(X_Spin2(k,:),Y_Spin2(k,:),Z_Spin2(k,:),Y_Spin2(k,:),rotate_theta1_2(k,:));
+[X1_2(k,:), Y1_2(k,:), Z1_2(k,:)] = AxisAngleRotate(X_Spin2(k,:),Y_Spin2(k,:),Z_Spin2(k,:),Y_Spin2(k,:),rotate_theta1_2(k,:));
 %second rotaion around z-axis with 5 grad
 rotate_theta2_2(k,:)=normrnd(0,sigma_z); %range -5 to 5grad
-[X2_2(k,:), Y2_2(k,:) Z2_2(k,:)] = AxisAngleRotate(X1_2(k,:),Y1_2(k,:),Z1_2(k,:),Z1_2(k,:),rotate_theta2_2(k,:));
+[X2_2(k,:), Y2_2(k,:), Z2_2(k,:)] = AxisAngleRotate(X1_2(k,:),Y1_2(k,:),Z1_2(k,:),Z1_2(k,:),rotate_theta2_2(k,:));
 %find electron center
 M2(k,:)=N1C2_2(k,:)+X2_2(k,:)*((sqrt(7^2-0.75^2)+sqrt(8.2^2-0.75^2))/2+2.3);
 
@@ -238,41 +181,11 @@ Conformers.M2=M2;
 Conformers.EulerAngles.R1=[o1(:,:)];
 Conformers.EulerAngles.R2=[o2(:,:)];
 Conformers.Distance = r/10;
-pd=fitdist(Conformers.Distance,'Normal');
+pd=fitdist(Conformers.Distance,'Normal'); %fit distances to a normal distribution
 R_mean=pd.mu;
-sigma=pd.sigma;
-FWHM=2.3548*sigma;
-zeiten = zeit*1000;
-% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-% h=histfit(Conformers.Distance);
-% h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
-% h(2).Color = [1 0 0];
-% y=get(h,'YData');
-% y1=cell2mat(y(1));
-% ymax=max(y1);
-% Distance(nd,:)=r/10;
-% str2=num2str(nd+7);
-% save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\',['Conformere for ARNA1_',str2,'Model_',str,'.mat']],'Conformers')
-% end
-
-% for s=1:8
-% bpd=s;
-% pd=fitdist(Distance(bpd,:)','Normal');
-% mu(s)=pd.mu;
-% sigma(s)=pd.sigma;
+sigma=pd.sigma;  %sigma value of normal distribution
+FWHM=2.3548*sigma;  %FWHM 
+% zeiten = zeit*1000;
+% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % end 
-% x=1:0.01:5.5;
-% for p=1:s
-% y(p,:)=normpdf(x,mu(p),sigma(p));
-% plot(x,y(p,:),'LineWidth',2)
-% % xlim([0 5])
-% hold on 
-% end 
-% xlim([1 5.5])
-% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
-%     [1 2 3 4 5 6]);
-% set(gca,'linewidth',1.5) 
-% box off
-% xlabel('Distance [nm]')
-% ylabel('Normalised probability')
