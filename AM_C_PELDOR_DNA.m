@@ -1,6 +1,9 @@
-% function [Result,R_mean,FWHM,ymax] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
-function [Result] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
+function [Result,R_mean,FWHM,ymax] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
+% function [Result,R_mean,FWHM] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
+% function [R_mean,FWHM] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
+% function [Result] = AM_C_PELDOR_DNA(sigma_y,nd,EP,zeit)
 % 
+% for nd=5:14
 % nd=6;
 nd=nd-4;
 sigma_y=0;
@@ -48,8 +51,8 @@ alpha_2=[76.1446 76.1787 76.1766 76.2030 76.1871 76.1902 76.1983 76.1741 76.1634
 beta_2=[6.6477 6.6232 6.6401 6.6957 6.7435 6.7840 6.7882 6.7712 6.7300 6.6836]./360.*2.*pi;
 
 %bending direction
-for w=1:361
-theta=(w-1);
+for w=1:36
+theta=(w-1)*10;
 [new_X, new_Y, new_Z]=AxisAngleRotate(X_axis,Y_axis,Z_axis,Z_axis,theta);
 C1a_dre=[new_X;new_Y;new_Z]\[x1;y1;z1];
 C1a_dre=C1a_dre';
@@ -63,24 +66,21 @@ y2_dre=C1b_dre(1:20,2);
 z2_dre=C1b_dre(1:20,3);
 
 %bending angle
-for k=1:20
-alpha=normrnd(0,28)/360*2*pi;
-if alpha<0
-    alpha=-alpha;
-elseif alpha==0
-    alpha=normrnd(0,28)/360*2*pi;
-else
-    alpha=alpha;
+for k=1:25
+% alpha=abs(normrnd(0,28)/360*2*pi);
+alpha=abs(normrnd(0,50)/360*2*pi);
 % alpha=28/360*2*pi;
+if alpha == 0
+    R1=0;R2=0;
+else 
+    R1=(z1(20)-z1(1))/alpha;  %%Radius value of torus
+    R2=(z2(20)-z2(1))/alpha;
 end 
-
-R1=(z1(20)-z1(1))/alpha;
-R2=(z2(20)-z2(1))/alpha;
 
 for i=1:20
 phi_1(i)=(z1_dre(i)-z1_dre(1))/(z1_dre(20)-z1_dre(1))*alpha;
 phi_2(i)=(z2_dre(i)-z2_dre(1))/(z2_dre(20)-z2_dre(1))*alpha;
-new_x1(i)=x1_dre(i)*cos(phi_1(i));
+new_x1(i)=x1_dre(i)*cos(phi_1(i));  %(sin(alpha)/abs(sin(alpha))) for sign
 new_z1(i)=(R1+x1_dre(i))*sin(phi_1(i))+z1(1);
 new_x2(i)=x2_dre(i)*cos(phi_2(i));
 new_z2(i)=(R2+x2_dre(i))*sin(phi_2(i))+z1(1);
@@ -209,12 +209,32 @@ FWHM=2.3548*sigma;  %FWHM
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
 % Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-% h=histfit(Conformers.Distance);   %plot distribution
-% h(1).FaceColor = [.3 .75 .93];
-% h(2).Color = [.0 .0 1];
-% y=get(h,'YData');  
-% y1=cell2mat(y(1));
-% ymax=max(y1);     %%max value of histogramm
+h=histfit(Conformers.Distance);   %plot distribution
+h(1).FaceColor = [0.43921568627451 0.631372549019608 0.76078431372549];
+h(2).Color = [0 0.447058823529412 0.741176470588235];
+y=get(h,'YData');  
+y1=cell2mat(y(1));
+ymax=max(y1);     %%max value of histogramm
+% Distance(nd,:)=r/10;
 end 
-
-
+% % 
+% for s=1:10
+% bpd=s;
+% pd=fitdist(Distance(bpd,:)','Normal');
+% mu(s)=pd.mu;
+% sigma(s)=pd.sigma;
+% end 
+% x=1:0.01:5.5;
+% for p=1:s
+% y(p,:)=normpdf(x,mu(p),sigma(p));
+% plot(x,y(p,:),'LineWidth',3)
+% % xlim([0 5])
+% hold on 
+% end 
+% xlim([1 5.5])
+% set(gca,'FontSize',14,'FontWeight','bold','XTick',...
+%     [1 2 3 4 5 6]);
+% set(gca,'linewidth',1.5) 
+% box off
+% xlabel('Distance [nm]')
+% ylabel('Normalised probability')

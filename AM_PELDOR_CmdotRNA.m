@@ -1,19 +1,19 @@
 %% 
 % function [Result,R_mean] = AM_PELDOR_RNA(sigma_r,nd,EP,zeit)
 % function [Result,R_mean] = AM_PELDOR_CmdotRNA(sigma_r,nd,EP,zeit)
-function [Result,R_mean,ymax] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit)
+function [Result,R_mean,ymax] = AM_PELDOR_CmdotRNA(sigma_y,nd,EP,zeit,str)
 % % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
 % for nd=8:15
-str='A';
-sigma_z=5;
-% sigma_y=0;
+% str='B';
+sigma_z=6;
+sigma_y=6;
 %%Parameter extracted from pymol and fitted by cftool
 n_bp=1:1:20; %20base pair
 % nd=8;
 % sigma_r=1;
 nd=nd-7;
 
-%parameter for expression for C1-points at ARNA
+%parameter for expression for C1-points at RNA
 r0=8.284;
 h0=29.8476;
 b=0.5709;
@@ -24,18 +24,6 @@ c2_y=3.265;
 d=2.712;
 e1=-1.527;
 e2=-3.944;
-
-%parameter for expression for C1-points at RNA
-% r0=8.837;
-% h0=35.5686;
-% b=0.522;
-% c1_x=3.565;
-% c1_y=1.983;
-% c2_x=-1.468;
-% c2_y=3.273;
-% d=2.955;
-% e1=-2.177;
-% e2=-3.728;
 
 %helix.A
 x1=r0*sin(b.*n_bp+c1_x);
@@ -57,18 +45,16 @@ C=sqrt((2*pi*r0)^2*L0^2/h0^2+L0^2); %countor length (AM paper)
 n_turns=b.*19/2/pi;  %the range of b.*n_bp+c1 = how much 2pi = how much turns
 
 %z_axis
-% Z=[x1(11)-x1(1) y1(11)-y1(1) z1(11)-z1(1)];
-% z_axis=Z/norm(Z);
 z_axis=[0 0 1];
 
 
 %%rotationsangle 1st SL
 alpha_1=74.42/360*2*pi;
 beta_1=5.2/360*2*pi; 
+% beta_1=3.7/360*2*pi; 
 %%rotationsangle 2nd SL 8-15 bp; (5-7)samples dont exist
 alpha_2=[74.4187 74.6188 76.6019 78.0654 77.2759 75.1897 74.2406 75.5165]./360.*2.*pi;
 beta_2=[5.2154 5.0264 4.3064 3.6792 3.6413 4.0283 4.3597 4.3319]./360.*2.*pi;
-
 
 p=500;
 for k=1:p
@@ -76,7 +62,7 @@ switch (str)
     case 'B'
 % parameter
 % deltar=normrnd(0,sigma_r);   %standard deviation of radius=0.65 
-deltar=normrnd(0,0.9);   %standard deviation of radius=0.65 
+deltar=normrnd(0,0.75);   %standard deviation of radius=0.65 
 % deltar=0;
 r=r0+deltar;
 deltaL=-deltar*20/3.8;  %AM paper
@@ -115,7 +101,7 @@ new_z2=new_d.*n_bp+new_e2;
    case 'A'
 % Model A
 % % % %parameter
-deltah=normrnd(0,5);   %standard deviation of pitch height= 3.85 
+deltah=normrnd(0,3);   %standard deviation of pitch height= 3.85 
 % deltah=normrnd(0,sigma_h);
 % deltah=0;
 h=h0+deltah;
@@ -147,8 +133,6 @@ end
 
 %%%%new coordinate calculation
 %new C1a/C1b position
-new_z1=1.12*new_z1;
-new_z2=1.12*new_z2;
 C1a=[new_x1;new_y1;new_z1]';
 C1b=[new_x2;new_y2;new_z2]';
 
@@ -165,7 +149,7 @@ y_axis_Spin1=y_axis_Spin1/norm(y_axis_Spin1);
 %%first rotation
 x_axis2_Spin1=x_axis1_Spin1.*cos(alpha_1)-y_axis_Spin1.*sin(alpha_1);
 %%second rotation
-x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)+z_axis_Spin1.*sin(beta_1);
+x_axis3_Spin1=x_axis2_Spin1.*cos(beta_1)-z_axis_Spin1.*sin(beta_1);
 %%find Spin1
 Spin_1=C1a(3,:)+x_axis3_Spin1.*11.4;  %length of C1 and spinlabel is 11.4A
 % 
@@ -212,7 +196,7 @@ y_axis_Spin2=y_axis_Spin2/norm(y_axis_Spin2);
 %%first rotation
 x_axis2_Spin2=x_axis1_Spin2.*cos(alpha_2(nd))+y_axis_Spin2.*sin(alpha_2(nd));
 %%second rotation
-x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))-z_axis_Spin2.*sin(beta_2(nd));
+x_axis3_Spin2=x_axis2_Spin2.*cos(beta_2(nd))+z_axis_Spin2.*sin(beta_2(nd));
 %%find Spin2
 Spin_2=C1b(10+(nd-1),:)+x_axis3_Spin2.*11.4;  %length of C1 and spinlabel is 11.5A
 
@@ -259,14 +243,19 @@ pd=fitdist(Conformers.Distance,'Normal');
 R_mean=pd.mu;
 % sigma=pd.sigma;
 zeiten = zeit*1000;
-% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-% h=histfit(Conformers.Distance);
-% h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
-% h(2).Color = [1 0 0];
-% y=get(h,'YData');
-% y1=cell2mat(y(1));
-% ymax=max(y1);
+Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+h=histfit(Conformers.Distance);
+% %%model A color
+% h(1).FaceColor = [0.980392156862745 0.662745098039216 0.529411764705882];
+% h(2).Color = [1 0.411764705882353 0.16078431372549];
+% %%model B color
+h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
+h(2).Color = [1 0 0];
+% %%model C color
+y=get(h,'YData');
+y1=cell2mat(y(1));
+ymax=max(y1);
 % Distance(nd,:)=r/10;
 % str2=num2str(nd+7);
 % save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmApriRNA\',['Conformere for CmdotApriRNA1_',str2,'Model_',str,'.mat']],'Conformers')

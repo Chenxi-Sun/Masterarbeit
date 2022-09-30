@@ -1,11 +1,12 @@
 function [Result,R_mean,FWHM,ymax] = AMPELDOR_DNA(sigma_y,nd,EP,zeit,str)
+% function [Result,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nd,EP,zeit,str)
 % function [Result,R_mean,FWHM] = AMPELDOR_DNA(sigma_y,nd,EP,zeit)
 % function [Result] = AMPELDOR_DNA(nd,sigma_r,EP,zeit)
-% nd=5;
+% nd=7;
 % for nd=5:14
 % str='B';
-sigma_z=5;
-% sigma_y=6;
+sigma_z=0;
+sigma_y=0;
 nd=nd-4;
 
 n_bp=1:1:20; %20base pair
@@ -69,6 +70,7 @@ switch (str)
     case 'B'
 % parameter
 deltar=normrnd(0,0.65);   %standard deviation of radius=0.65 
+% deltar=normrnd(0,2.5);
 % deltar=0;
 r=r0+deltar;
 deltaL=-deltar*20/3.2;  %AM paper
@@ -107,6 +109,7 @@ new_z2=new_d.*n_bp+new_e2;
 % Model A
 % % %parameter
 deltah=normrnd(0,3.85);   %standard deviation of pitch height= 3.85 
+% deltah=normrnd(0,6);
 % deltah=0;
 h=h0+deltah;
 deltaL=deltah*20/18.2;  %AM paper
@@ -238,12 +241,12 @@ FWHM=2.3548*sigma;  %FWHM
 zeiten = zeit*1000;
 Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the programr
 % Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
-h=histfit(Conformers.Distance);   %plot distribution
-h(1).FaceColor = [.3 .75 .93];
-h(2).Color = [.0 .0 1];
-y=get(h,'YData');  
-y1=cell2mat(y(1));
-ymax=max(y1);     %%max value of histogramm
+% h=histfit(Conformers.Distance);   %plot distribution
+% h(1).FaceColor = [0.811764705882353 0.925490196078431 1];
+% h(2).Color = [0.301960784313725 0.745098039215686 0.933333333333333];
+% y=get(h,'YData');  
+% y1=cell2mat(y(1));
+% ymax=max(y1);     %%max value of histogramm
 % Distance(nd,:)=r/10;
 end 
 % 

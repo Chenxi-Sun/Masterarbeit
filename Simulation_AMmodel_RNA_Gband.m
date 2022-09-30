@@ -1,4 +1,10 @@
-% for nr=8:15
+for nr=8:15
+
+%model A or B or C
+% model='A';
+% model='B';
+model='C';
+
 % clear;
 Band = "Gband";
 EP = importdata('ExpParG_RNA1_10.mat');
@@ -7,13 +13,13 @@ dsRNA.Xband.EP.Settings.PumpFrequency = EP.Settings.PumpFrequency;
 dsRNA.Xband.EP.Settings.DetectionFrequency = EP.Settings.DetectionFrequency;
 dsRNA.Xband.EP.Settings.B0 = EP.Settings.B0;
 % 
-load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-% load('E:\Vorlesungen\EPR\Masterarbeit\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
-nd='Which 2nd position? (8-15):';
-str=input(nd,'s');
-% % 
+% load('Z:\Students\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+load('D:\ChSun\Masterarbeit\AMmodel_RNA\allRNAdata.mat')
+% nd='Which 2nd position? (8-15):';
+% str=input(nd,'s');
+% 
 %     
-% str=num2str(nr);
+str=num2str(nr);
 
 switch (str)
  case '8'
@@ -94,12 +100,31 @@ end
 % end
 % [Simulated,R_mean] = AM_PELDOR_RNA(sigma_h_min,nr,EP,zeit);
 
-% 
-sigma_y=0;
-% [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,'B');
-% [Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit,'B');
+% Model A/B but change rotate value for RNA1_13-15
+% N=length(Experimental.Sexp(:,1));
+% o=0.1;
+% for i=1:35
+% rotate_values=i*10;
+% Simulated = AM_PELDOR_RNA(rotate_values,nr,EP,zeit,str);
+% [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
+% Experimental.stack = [Experimental.Sexp(:,1),Experimental.Sexp(:,2)+o*1,Experimental.Sexp(:,3)+3*o,Experimental.Sexp(:,4)+4*o,Experimental.Sexp(:,5)+6*o];
+% SC = [SC(:,1),SC(:,2)+o*1,SC(:,3)+o*3,SC(:,4)+o*4,SC(:,5)+o*6];
+% RMSD(i,:)=sqrt(sum((SC-Experimental.stack).^2,1)/N);
+% end 
+% RSMD_alloffset=RMSD(:,3);
+% [m,n]=min(RSMD_alloffset);
+% rotate_values_min=n*10;
+% % end
+% [Simulated,R_mean] = AM_PELDOR_RNA(rotate_values_min,nr,EP,zeit,'B');
 
+% 
+sigma_y=6;
+% [Simulated,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nr,EP,zeit,model);
+% [Simulated,R_mean,FWHM] = AM_PELDOR_ApriRNA(sigma_y,nr,EP,zeit,'B');
+% tic
 [Simulated,R_mean,FWHM] = AM_C_PELDOR_RNA(sigma_y,nr,EP,zeit);
+% [Simulated,R_mean,FWHM] = AM_C_PELDOR_ApriRNA(sigma_y,nr,EP,zeit);
+% toc
 % R_mean_all(nr-7,:)=R_mean;
 % FWHM_all(nr-7,:)=FWHM;
 % end
@@ -130,6 +155,7 @@ sigma_y=0;
 % % PLOT
 % 
 [devn,SC] = ScaleModdev('single',Experimental.Sexp,Simulated.Sexp);
+% [devn,SC] = ScaleModdev('alle',Experimental.Sexp,Simulated.Sexp);
 o = 0.02; 
 
 switch (str)
@@ -161,7 +187,9 @@ end
 
 
 F=figure(2);
-plot(zeit*1000,SC,'r','LineWidth',2)
+% plot(zeit*1000,SC,'Color',[1 0.411764705882353 0.16078431372549],'LineWidth',2)
+% plot(zeit*1000,SC,'r','LineWidth',2)
+plot(zeit*1000,SC,'Color',[1 0.509803921568627 0.811764705882353],'LineWidth',2)
 hold on
 plot(zeit*1000,Experimental.stack,'k','LineWidth',2)
 xlabel('Time [ns]');
@@ -215,15 +243,15 @@ end
 set(gca,'linewidth',1.5) 
 % 
 % 
-% % % % %CmRNAModelB
-% savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_falscheRichtung\CmRNA_ModelB_Gband_y=0\Gband_CmARNA_ModelB1_',str,'.fig'])
-% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_falscheRichtung\CmRNA_ModelB_Gband_y=0\',['Gband_CmARNA_ModelB1_',str,'.pdf'])
+% % % % % %CmRNAModelB
+savefig(F,['D:\ChSun\Result_24.08\CmARNA\CmARNA_Model',model,'_Gband\single_Gband_CmARNAModel',model,'1_',str,'.fig'])
+savePDF(['D:\ChSun\Result_24.08\CmARNA\CmARNA_Model',model,'_Gband\'],['single_Gband_CmARNAModel',model,'1_',str,'.pdf'])
 % % % % 
 % % % %CmRNAmodelA
 % % savefig(F,['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\Gband_CmRNA_ModelB1_',str,'.fig'])
-% % savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\',['Gband_CmRNA_ModelB1_',str,'.pdf'])
+% savePDF('Z:\Students\ChSun\Masterarbeit\11.07_Result\CmRNA_ModelB_Gband_y=0\',['Gband_CmRNA_ModelB1_',str,'.pdf'])
 % % % 
 % % % % 
-% clear;
-% clf;
-% end 
+clear;
+clf;
+end 

@@ -2,15 +2,15 @@
 % function [Result,R_mean] = AMPELDOR_CdotDNA(nd,EP,zeit)
 % function [Result,R_mean,sigma] = AMPELDOR_CdotDNA(nd,EP,zeit)
 % sigma_y=14;
-function [Result] = AMPELDOR_CdotDNA(sigma_y,nd,EP,zeit,str)
+function [Result,ymax] = AMPELDOR_CdotDNA(sigma_y,nd,EP,zeit,str)
 % function [Result] = AMPELDOR_CdotDNA(nd,sigma_r,EP,zeit)
 % function [Result] = AMPELDOR_CdotDNA(nd,sigma_h,EP,zeit)
 % function [Result] = AMPELDOR_CdotDNA(alpha,beta,EP,zeit)
 % for i=5:14
 nd=nd-4;
 % nd=i-4;
-sigma_z=5;
-% sigma_y=0;
+sigma_z=6;
+sigma_y=6;
 
 %%Parameter extracted from pymol and fitted by cftool
 n_bp=1:1:20; %20base pair
@@ -240,12 +240,16 @@ Conformers.Distance = r/10;
 % R_mean=pd.mu;
 % sigma=pd.sigma;
 zeiten = zeit*1000;
-% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % mean_trend=mean(trend);
-% h=histfit(Conformers.Distance);
-% h(1).FaceColor = [.3 .75 .93];
-% h(2).Color = [.0 .0 1];
-str2=num2str(nd+4);
-save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\',['Conformere for CdotDNA1_',str2,'Model_',str,'.mat']],'Conformers')
+h=histfit(Conformers.Distance);   %plot distribution
+% h(1).FaceColor = [0.811764705882353 0.925490196078431 1];
+% h(2).Color = [0.301960784313725 0.745098039215686 0.933333333333333];
+h(1).FaceColor = [.3 .75 .93];
+h(2).Color = [.0 .0 1];
+y=get(h,'YData');  
+y1=cell2mat(y(1));
+ymax=max(y1);     %%max value of histogramm
+% save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CDNA\',['Conformere for CdotDNA1_',str2,'Model_',str,'.mat']],'Conformers')
 end 

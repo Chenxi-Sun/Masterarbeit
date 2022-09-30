@@ -1,13 +1,16 @@
 % function [Result,R_mean,FWHM,ymax] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit,str)
-% function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit,str)
+% function [Result,R_mean] = AM_PELDOR_RNA(rotate_values,nd,EP,zeit,str)
+function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_y,nd,EP,zeit,str)
+% function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_h,nd,EP,zeit)
+% function [Result,R_mean,FWHM] = AM_PELDOR_RNA(sigma_r,nd,EP,zeit)
 % function [Result,R_mean] = AM_PELDOR_RNA(nd,EP,zeit)
 % for nd=8:15
-str='B';
+% str='B';
 sigma_y=0;
 sigma_z=0;
 %%Parameter extracted from pymol and fitted by cftool
 n_bp=1:1:20; %20base pair
-nd=9;
+% nd=12;
 nd=nd-7;
 %%initial position for C from pymol
 
@@ -60,8 +63,8 @@ for k=1:p
 switch (str)
     case 'B'
 % parameter
-% deltar=normrnd(0,sigma_r);   %standard deviation of radius=0.65 
-deltar=normrnd(0,0.9);   %standard deviation of radius=0.65 
+% deltar=normrnd(0,0.1);   %standard deviation of radius=0.65 
+deltar=normrnd(0,0.75);   %standard deviation of radius=0.65 
 % deltar=0;
 r=r0+deltar;
 deltaL=-deltar*20/3.8;  %AM paper
@@ -100,7 +103,7 @@ new_z2=new_d.*n_bp+new_e2;
    case 'A'
 % Model A
 % % % %parameter
-deltah=normrnd(0,5);   %standard deviation of pitch height= 3.85 
+deltah=normrnd(0,3);   %standard deviation of pitch height= 3.85 
 % deltah=normrnd(0,sigma_h);
 % deltah=0;
 h=h0+deltah;
@@ -220,6 +223,8 @@ Y_Spin2(k,:)=cross(Z_Spin2(k,:),X_Spin2(k,:));
 Y_Spin2(k,:)=Y_Spin2(k,:)/norm(Y_Spin2(k,:));
 
 % % % %%rotation around N-O axis 
+%change static structure
+% [X1_2(k,:), Y1_2(k,:) Z1_2(k,:)] = AxisAngleRotate(X_Spin2(k,:),Y_Spin2(k,:),Z_Spin2(k,:),X_Spin2(k,:),rotate_values);
 %first rotaion around y-axis with 6 grad
 rotate_theta1_2(k,:)=normrnd(0,sigma_y); %range -5 to 5grad
 [X1_2(k,:), Y1_2(k,:) Z1_2(k,:)] = AxisAngleRotate(X_Spin2(k,:),Y_Spin2(k,:),Z_Spin2(k,:),Y_Spin2(k,:),rotate_theta1_2(k,:));
@@ -243,18 +248,23 @@ R_mean=pd.mu;
 sigma=pd.sigma;
 FWHM=2.3548*sigma;
 zeiten = zeit*1000;
-% Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
-Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
+Result = MainPELDORtime(EP,Conformers,zeiten); %...time lets you set the time axis from outside the program
+% Result = MainPELDORtime_modAC(EP,Conformers,zeiten,6.5); %for G-band
 % h=histfit(Conformers.Distance);
+% %%model A color
+% h(1).FaceColor = [0.980392156862745 0.662745098039216 0.529411764705882];
+% h(2).Color = [1 0.411764705882353 0.16078431372549];
+% %%model B color
 % h(1).FaceColor = [1 0.411764705882353 0.16078431372549];
 % h(2).Color = [1 0 0];
+% % %%model C color
 % y=get(h,'YData');
 % y1=cell2mat(y(1));
 % ymax=max(y1);
 % Distance(nd,:)=r/10;
 % str2=num2str(nd+7);
 % save(['Z:\Students\ChSun\Masterarbeit\11.07_Result\CmARNA_z_ratio=1.12\',['Conformere for ARNA1_',str2,'Model_',str,'.mat']],'Conformers')
-% end
+end
 
 % for s=1:8
 % bpd=s;
